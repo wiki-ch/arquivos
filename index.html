@@ -391,7 +391,7 @@ subTabs.forEach((tab, idx) => {
 /* =========================
    FUNÇÕES DE RENDER
    ========================= */
-const coverDefault = 'https://dataminerbr.github.io/removeds_sbt/cover.jpg';
+const coverDefault = 'https://wiki-ch.github.io/arquivos/cover.jpg';
 
 function renderLote(containerId, episodes) {
   const grid = document.getElementById(containerId);
@@ -464,8 +464,8 @@ function updateSubTabsCounters(mainName) {
    CARREGAMENTO DOS JSONS
    ========================= */
 Promise.all([
-  fetch('https://dataminerbr.github.io/removeds_sbt/chaves_formatado.json').then(res => res.json()),
-  fetch('https://dataminerbr.github.io/removeds_sbt/chapolin_formatado.json').then(res => res.json())
+  fetch('https://wiki-ch.github.io/arquivos/chaves_formatado.json').then(res => res.json()),
+  fetch('https://wiki-ch.github.io/arquivos/chapolin_formatado.json').then(res => res.json())
 ]).then(([dataChaves, dataChapolin]) => {
   chavesData = dataChaves;
   chapolinData = dataChapolin;
