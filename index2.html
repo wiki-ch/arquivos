@@ -319,174 +319,179 @@ body.theme-chapolin #btnTopo {
     </div>
   </footer>
   
- <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const menuItems = document.querySelectorAll('.menu-item');
-    const sections = document.querySelectorAll('section');
-    const gridChaves = document.getElementById('grid-chaves-i');
-    const gridChapolin = document.getElementById('grid-chapolin-i');
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const menuItems = document.querySelectorAll('.menu-item');
+  const sections = document.querySelectorAll('section');
+  const gridChaves = document.getElementById('grid-chaves-i');
+  const gridChapolin = document.getElementById('grid-chapolin-i');
 
-    const jsonURL = 'https://wiki-ch.github.io/arquivos/msw_formatado.json';
+  const jsonURL = 'https://wiki-ch.github.io/arquivos/msw_formatado.json';
 
-    // Função para formatar número com 3 dígitos
-    function formatNumero(numero) {
-      return numero.toString().padStart(3, '0');
-    }
+  // Formata número com 3 dígitos
+  function formatNumero(numero) {
+    return numero.toString().padStart(3, '0');
+  }
 
-    // Função para corrigir os espaços ao redor das barras
-    function formatTitulo(titulo) {
-      return titulo.replace(/\s*\/\s*/g, ' / ');
-    }
+  // Corrige espaços ao redor de "/"
+  function formatTitulo(titulo) {
+    return titulo.replace(/\s*\/\s*/g, ' / ');
+  }
 
-    // Função para gerar datas válidas apenas de segunda a sexta
-    function generateDateForEpisode(index) {
-      const startDate = new Date(2025, 7, 4, 10, 0, 0); // 04/08/2025 10:00
-      let date = new Date(startDate);
+  // Gera a data de acordo com a faixa do episódio
+  function generateDateForEpisode(numeroEpisodio) {
+    let date;
 
+    if (numeroEpisodio <= 99) {
+      // EP 001 a 099: segunda a sexta
+      const startDate = new Date(2025, 7, 3, 10, 0, 0); // 04/08/2025
+      date = new Date(startDate);
       let addedEpisodes = 0;
-      while (addedEpisodes < index) {
+      while (addedEpisodes < numeroEpisodio) {
         date.setDate(date.getDate() + 1);
         const day = date.getDay();
-        // Segunda a sexta (1 a 5)
-        if (day >= 1 && day <= 5) {
-          addedEpisodes++;
-        }
+        if (day >= 1 && day <= 5) addedEpisodes++;
       }
       return date;
+
+    } else if (numeroEpisodio >= 100 && numeroEpisodio <= 200) {
+      // EP 100 a 200: terça, quarta e quinta
+      const startDate = new Date(2025, 8, 9, 2, 0, 0); // 09/09/2025
+      date = new Date(startDate);
+      let addedEpisodes = 100; // começa do episódio 100
+      while (addedEpisodes < numeroEpisodio) {
+        date.setDate(date.getDate() + 1);
+        const day = date.getDay();
+        if (day >= 2 && day <= 4) addedEpisodes++; // terça=2, quarta=3, quinta=4
+      }
+      return date;
+
+    } else {
+      // EP 201+ → sem data
+      return null;
     }
+  }
 
-    // Função para formatar data como DD/MM/YYYY 10:00
-    function formatDate(date) {
-      const dd = String(date.getDate()).padStart(2, '0');
-      const mm = String(date.getMonth() + 1).padStart(2, '0');
-      const yyyy = date.getFullYear();
-      return `${dd}/${mm}/${yyyy}`;
-    }
+  // Formata data como DD/MM/YYYY 10:00
+  function formatDate(date) {
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+  }
 
-    // Função para carregar e renderizar os dados
-    function renderGrid(data, gridElement) {
-      gridElement.innerHTML = '';
+  // Renderiza a grid de episódios
+  function renderGrid(data, gridElement) {
+    gridElement.innerHTML = '';
+    const now = new Date();
 
-      const now = new Date(); // Data atual
+    data.forEach((item) => {
+      const numeroFormatado = formatNumero(item.numero);
+      const tituloFormatado = formatTitulo(item.titulo);
+      const date = generateDateForEpisode(item.numero);
 
-      data.forEach((item, idx) => {
-        const numeroFormatado = formatNumero(item.numero);
-        const tituloFormatado = formatTitulo(item.titulo);
+      let ref, tv, imgClass;
 
-        // Gerar data para o episódio atual
-        const date = generateDateForEpisode(idx);
+      if (!date) {
+        ref = '-';
+        tv = '-';
+        imgClass = ''; // sem cor
+      } else {
         const dia = String(date.getDate()).padStart(2, '0');
+        ref = `D${dia}E${numeroFormatado}`;
+        tv = formatDate(date);
+        imgClass = (now >= date) ? 'estreou' : 'aguardando';
+      }
 
-        // REF: D{dia}E{episodio}
-        const ref = `D${dia}E${numeroFormatado}`;
+      const div = document.createElement('div');
+      div.classList.add('fig');
+      div.innerHTML = `
+        <img src="${item.capa}" alt="${tituloFormatado}" class="${imgClass}">
+        <span>
+          <div class="fig-title">#${numeroFormatado} - ${tituloFormatado}</div>
+          <div class="fig-info">REF: ${ref}</div>
+          <div class="fig-info">TV: ${tv}</div>
+        </span>
+      `;
+      gridElement.appendChild(div);
+    });
+  }
 
-        // TV: DD/MM/YYYY 10:00
-        const tv = formatDate(date);
+  // Carrega os dados e aplica eventos de menu
+  function loadData() {
+    fetch(jsonURL)
+      .then(response => response.json())
+      .then(data => {
+        const loteChaves = data.lote_chaves;
+        const loteChapolin = data.lote_chapolin;
 
-        // Verifica se já estreou
-        const estreou = now >= date; // true se a data atual for igual ou maior que a estreia
-        const imgClass = estreou ? 'estreou' : 'aguardando';
+        renderGrid(loteChaves, gridChaves);
 
-        const div = document.createElement('div');
-        div.classList.add('fig');
-        div.innerHTML = `
-          <img src="${item.capa}" alt="${tituloFormatado}" class="${imgClass}">
-          <span>
-            <div class="fig-title">#${numeroFormatado} - ${tituloFormatado}</div>
-            <div class="fig-info">REF: ${ref}</div>
-            <div class="fig-info">TV: ${tv}</div>
-          </span>
-        `;
-        gridElement.appendChild(div);
-      });
-    }
+        menuItems.forEach(item => {
+          item.addEventListener('click', () => {
+            document.body.className = `theme-${item.dataset.main}`;
+            menuItems.forEach(menu => menu.classList.remove('active'));
+            item.classList.add('active');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(item.dataset.main).classList.add('active');
 
-    function loadData() {
-      fetch(jsonURL)
-        .then(response => response.json())
-        .then(data => {
-          const loteChaves = data.lote_chaves;
-          const loteChapolin = data.lote_chapolin;
-
-          // Renderiza inicialmente Chaves
-          renderGrid(loteChaves, gridChaves);
-
-          // Eventos de troca de menu
-          menuItems.forEach(item => {
-            item.addEventListener('click', () => {
-              document.body.className = `theme-${item.dataset.main}`;
-
-              menuItems.forEach(menu => menu.classList.remove('active'));
-              item.classList.add('active');
-
-              sections.forEach(section => section.classList.remove('active'));
-              document.getElementById(item.dataset.main).classList.add('active');
-
-              if (item.dataset.main === 'chaves') {
-                renderGrid(loteChaves, gridChaves);
-              } else {
-                renderGrid(loteChapolin, gridChapolin);
-              }
-            });
+            if (item.dataset.main === 'chaves') {
+              renderGrid(loteChaves, gridChaves);
+            } else {
+              renderGrid(loteChapolin, gridChapolin);
+            }
           });
-        })
-        .catch(error => {
-          console.error('Erro ao carregar o JSON:', error);
         });
-    }
+      })
+      .catch(error => console.error('Erro ao carregar o JSON:', error));
+  }
 
-    loadData();
-  });
+  loadData();
 
+  // Botão de topo
   const btnTopo = document.getElementById('btnTopo');
 
   function checkShowBtn() {
-    try {
-      if (window.pageYOffset > 300) {
-        btnTopo.classList.add('visible');
-      } else {
-        btnTopo.classList.remove('visible');
-      }
-    } catch (e) {}
+    if (!btnTopo) return;
+    if (window.pageYOffset > 300) {
+      btnTopo.classList.add('visible');
+    } else {
+      btnTopo.classList.remove('visible');
+    }
   }
 
   window.addEventListener('scroll', checkShowBtn, { passive: true });
   window.addEventListener('resize', checkShowBtn);
+  checkShowBtn();
 
-  document.addEventListener('DOMContentLoaded', () => {
-    checkShowBtn();
-  });
-
-  btnTopo.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  if (btnTopo) {
+    btnTopo.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   const observer = new MutationObserver(muts => {
-    for (const m of muts) {
+    muts.forEach(m => {
       if (m.attributeName === 'class') checkShowBtn();
-    }
+    });
   });
-
   observer.observe(document.body, { attributes: true });
-  
-  /* =========================
-   FILTRO DE BUSCA
-   ========================= */
-const searchInput = document.getElementById('searchInput');
 
-searchInput.addEventListener('input', () => {
-  const termo = searchInput.value.toLowerCase();
-  const activeSection = document.querySelector('main section.active');
-  if (!activeSection) return;
+  // Filtro de busca
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const termo = searchInput.value.toLowerCase();
+      const activeSection = document.querySelector('main section.active');
+      if (!activeSection) return;
+      activeSection.querySelectorAll('.fig').forEach(fig => {
+        const texto = fig.innerText.toLowerCase();
+        fig.style.display = texto.includes(termo) ? 'flex' : 'none';
+      });
+    });
+  }
 
-  const figs = activeSection.querySelectorAll('.fig');
-  figs.forEach(fig => {
-    const texto = fig.innerText.toLowerCase();
-    fig.style.display = texto.includes(termo) ? 'flex' : 'none';
-  });
 });
-
-
 </script>
 
 <style>
