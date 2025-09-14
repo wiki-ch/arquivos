@@ -3742,12 +3742,12 @@
       "original_title": "",
       "episode_order_number": "",
       "id": "",
-      "cover": "",
-      "time": "",
-      "enabled": false,
-      "exibicao": "",
+      "cover": "https://i.ibb.co/M5NccXsX/vlcsnap-2025-09-14-15h40m43s863.png",
+      "time": "25",
+      "enabled": true,
+      "exibicao": "SBT REDE",
       "datas": [
-        ""
+        "14/09/2025"
       ]
     },
     {
@@ -4438,3 +4438,4 @@
     }
   ]
 }
+
