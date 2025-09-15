@@ -1965,7 +1965,7 @@
       "cover": "https://stream.maissbt.com/uploads/efd24617-f953-4132-86e7-7c2678d33d6d.jpeg",
       "time": "25",
       "enabled": true,
-      "exibicao": "SBT REDE | +SBT",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "31/08/2025"
       ]
@@ -4438,6 +4438,7 @@
     }
   ]
 }
+
 
 
 
