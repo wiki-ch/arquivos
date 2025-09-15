@@ -367,6 +367,8 @@
       <p class="loading-message">Carregando programação...</p>
     </div>
   </div>
+  
+  
   <!-- MODAL -->
   <div id="modal">
     <div id="modal-content">
@@ -627,8 +629,8 @@
       <div class="schedule-description">
         <font size="2">Sinopse: ${schedule.description || 'Não disponível'}</font>
       </div>
-    </div>
-  </div>
+    </div>	
+  </div> 
 `;
 
 
@@ -648,6 +650,14 @@
         });
 
         dateGroup.appendChild(channelBox);
+
+        // <<< AQUI >>> adiciona sua linha de texto
+        const aviso = document.createElement("div");
+        aviso.style.textAlign = "center";
+        aviso.style.color = "#007bff";
+        aviso.innerText = "* NOTA: O Canal costuma alterar o nome do episódio até a data de exibição.";
+        dateGroup.appendChild(aviso);
+		
         container.appendChild(dateGroup);
       }
     }
