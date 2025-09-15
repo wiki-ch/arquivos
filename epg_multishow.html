@@ -123,18 +123,38 @@
       margin-bottom: 5px;
     }
 
-    .progress-bar-container {
-      background-color: #222;
-      height: 8px;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
 
-    .progress-bar {
-      background-color: #f44336;
-      height: 100%;
-    }
+	
+	
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.progress-text {
+  font-size: 14px;
+  color: #fff;
+  min-width: 40px; /* fixa largura p/ alinhar certinho */
+  text-align: right;
+}
+
+.progress-bar-container {
+  background-color: #222;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.progress-bar {
+  background-color: #f44336;
+  height: 100%;
+}
+	
+	
+	
 
     /* Modal */
     #modal {
@@ -541,79 +561,80 @@
     }
 
 
-    async function renderData(channel) {
-      const container = document.getElementById('content');
-      container.innerHTML = '';
+async function renderData(channel) {
+  const container = document.getElementById('content');
+  container.innerHTML = '';
 
-      const episodeData = await fetch("https://wiki-ch.github.io/arquivos/msw_formatado.json")
-        .then(r => r.json())
-        .catch(_ => ({ lote_chaves: [], lote_chapolin: [] }));
+  const episodeData = await fetch("https://wiki-ch.github.io/arquivos/msw_formatado.json")
+    .then(r => r.json())
+    .catch(_ => ({ lote_chaves: [], lote_chapolin: [] }));
 
-      const getEpisodeTitle = (program, epNumber) => {
-        const list = program === "Chaves" ? episodeData.lote_chaves : episodeData.lote_chapolin;
-        const match = list.find(ep => ep.numero === String(epNumber).padStart(3, '0'));
-        return match ? match.titulo : '';
-      };
+  const getEpisodeTitle = (program, epNumber) => {
+    const list = program === "Chaves" ? episodeData.lote_chaves : episodeData.lote_chapolin;
+    const match = list.find(ep => ep.numero === String(epNumber).padStart(3, '0'));
+    return match ? match.titulo : '';
+  };
 
-      channel.schedules.sort((a, b) => a.startTime - b.startTime);
-      const filteredSchedules = channel.schedules.filter(s => s.title === "Chaves" || s.title === "Chapolin");
+  channel.schedules.sort((a, b) => a.startTime - b.startTime);
+  const filteredSchedules = channel.schedules.filter(s => s.title === "Chaves" || s.title === "Chapolin");
 
-      // Filtra pelo dia escolhido
-      const groupedByDate = {};
-      filteredSchedules.forEach(schedule => {
-        const start = new Date(schedule.startTime * 1000);
-        if (start.toDateString() !== selectedDate.toDateString()) return; // só o dia escolhido
-        const key = start.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'America/Sao_Paulo' });
-        if (!groupedByDate[key]) groupedByDate[key] = [];
-        groupedByDate[key].push(schedule);
-      });
+  // Filtra pelo dia escolhido
+  const groupedByDate = {};
+  filteredSchedules.forEach(schedule => {
+    const start = new Date(schedule.startTime * 1000);
+    if (start.toDateString() !== selectedDate.toDateString()) return; // só o dia escolhido
+    const key = start.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'America/Sao_Paulo' });
+    if (!groupedByDate[key]) groupedByDate[key] = [];
+    groupedByDate[key].push(schedule);
+  });
 
-      for (const [date, schedules] of Object.entries(groupedByDate)) {
-        const dateGroup = document.createElement('div');
-        dateGroup.className = 'date-group';
-        const title = document.createElement('div');
-        title.className = 'date-title';
-        title.innerText = date;
-        dateGroup.appendChild(title);
+  for (const [date, schedules] of Object.entries(groupedByDate)) {
+    const dateGroup = document.createElement('div');
+    dateGroup.className = 'date-group';
+    const title = document.createElement('div');
+    title.className = 'date-title';
+    title.innerText = date;
+    dateGroup.appendChild(title);
 
-        const channelBox = document.createElement('div');
-        channelBox.className = 'channel-group';
+    const channelBox = document.createElement('div');
+    channelBox.className = 'channel-group';
 
-        schedules.forEach(schedule => {
-          const sched = document.createElement('div');
-          sched.className = 'schedule';
+    schedules.forEach(schedule => {
+      const sched = document.createElement('div');
+      sched.className = 'schedule';
 
-          const inicio = new Date(schedule.startTime * 1000);
-          const fim = new Date(schedule.endTime * 1000);
+      const inicio = new Date(schedule.startTime * 1000);
+      const fim = new Date(schedule.endTime * 1000);
 
-          const epNum = inferEpisodeNumber(schedule);
-          const episodeTitle = getEpisodeTitle(schedule.title, epNum) || '';
-          const fullTitle = `${schedule.title} - D${String(schedule.seasonNumber || '').padStart(2, '0')}:E${String(epNum || '').padStart(2, '0')} - ${episodeTitle}`;
+      const epNum = inferEpisodeNumber(schedule);
+      const episodeTitle = getEpisodeTitle(schedule.title, epNum) || '';
+      const fullTitle = `${schedule.title} - D${String(schedule.seasonNumber || '').padStart(2, '0')}:E${String(epNum || '').padStart(2, '0')} - ${episodeTitle}`;
 
-          let color = "orange";
-          const dayOfWeek = inicio.getDay();
-          if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-            lotes.forEach((lote, idx) => {
-              let dias, diasValidos;
-              if (idx === 1) {
-                diasValidos = [2, 3, 4];
-                if (!diasValidos.includes(dayOfWeek)) return;
-                dias = diasTerQuaQui(lote.startDate, inicio);
-              } else {
-                dias = diasUteis(lote.startDate, inicio);
-              }
-              const epEsperado = lote.epStart + dias - 1;
-              if (epNum === epEsperado) {
-                color = schedule.title === "Chaves" ? "green" : "red";
-              }
-            });
+      let color = "orange";
+      const dayOfWeek = inicio.getDay();
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+        lotes.forEach((lote, idx) => {
+          let dias, diasValidos;
+          if (idx === 1) {
+            diasValidos = [2, 3, 4];
+            if (!diasValidos.includes(dayOfWeek)) return;
+            dias = diasTerQuaQui(lote.startDate, inicio);
+          } else {
+            dias = diasUteis(lote.startDate, inicio);
           }
-          sched.innerHTML = `
+          const epEsperado = lote.epStart + dias - 1;
+          if (epNum === epEsperado) {
+            color = schedule.title === "Chaves" ? "green" : "red";
+          }
+        });
+      }
+
+sched.innerHTML = `
   <div class="schedule-grid">
     <div class="logo-box" style="border: 2px solid ${color};">
       <img src="${schedule.title === 'Chaves'
-              ? 'https://i.ibb.co/jvrnZDq2/logo-standard-poster-2x3-chaves.png'  /* logo CHAVES */
-              : 'https://i.ibb.co/7tBN0Qjg/chapolin-logo-png-seeklogo-208768.png'}" /* logo CHAPOLIN */
+              ? 'https://i.ibb.co/jvrnZDq2/logo-standard-poster-2x3-chaves.png'
+              : 'https://i.ibb.co/7tBN0Qjg/chapolin-logo-png-seeklogo-208768.png'}"
         alt="${schedule.title}">
     </div>
 
@@ -629,38 +650,68 @@
       <div class="schedule-description">
         <font size="2">Sinopse: ${schedule.description || 'Não disponível'}</font>
       </div>
+      <div class="progress-wrapper"></div> <!-- AQUI VAI FICAR A BARRA E % -->
     </div>	
   </div> 
 `;
 
+      sched.style.cursor = 'pointer';
+      sched.addEventListener('click', () => abrirModal(schedule));
 
-          sched.style.cursor = 'pointer';
-          sched.addEventListener('click', () => abrirModal(schedule));
+      // Adiciona data-attributes para controle da barra
+      sched.dataset.startTime = schedule.startTime;
+      sched.dataset.endTime = schedule.endTime;
 
-          const nowTs = Math.floor(Date.now() / 1000);
-          if (nowTs >= schedule.startTime && nowTs <= schedule.endTime) {
-            const progress = ((nowTs - schedule.startTime) / (schedule.endTime - schedule.startTime)) * 100;
-            const bar = document.createElement('div');
-            bar.className = 'progress-bar-container';
-            bar.innerHTML = `<div class="progress-bar" style="width:${Math.round(progress)}%"></div>`;
-            sched.appendChild(bar);
-          }
+      channelBox.appendChild(sched);
+    });
 
-          channelBox.appendChild(sched);
-        });
+    dateGroup.appendChild(channelBox);
 
-        dateGroup.appendChild(channelBox);
+    // Linha de nota
+    const aviso = document.createElement("div");
+    aviso.style.textAlign = "center";
+    aviso.style.color = "#007bff";
+    aviso.innerText = "* NOTA: O Canal costuma alterar o nome do episódio até a data de exibição.";
+    dateGroup.appendChild(aviso);
 
-        // <<< AQUI >>> adiciona sua linha de texto
-        const aviso = document.createElement("div");
-        aviso.style.textAlign = "center";
-        aviso.style.color = "#007bff";
-        aviso.innerText = "* NOTA: O Canal costuma alterar o nome do episódio até a data de exibição.";
-        dateGroup.appendChild(aviso);
-		
-        container.appendChild(dateGroup);
+    container.appendChild(dateGroup);
+  }
+
+  // Atualiza as barras de progresso ao carregar
+  atualizarBarrasProgresso();
+}
+
+// ---------- Função de barra de progresso dinâmica ----------
+function atualizarBarrasProgresso() {
+  const nowTs = Math.floor(Date.now() / 1000);
+  const barras = document.querySelectorAll('.schedule');
+
+  barras.forEach(sched => {
+    const startTime = parseInt(sched.dataset.startTime, 10);
+    const endTime = parseInt(sched.dataset.endTime, 10);
+    const wrapper = sched.querySelector('.progress-wrapper');
+
+    if (nowTs >= startTime && nowTs <= endTime) {
+      const progress = ((nowTs - startTime) / (endTime - startTime)) * 100;
+
+      if (wrapper) {
+        wrapper.innerHTML = `
+          <div class="progress-text">${Math.round(progress)}%</div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width:${Math.round(progress)}%"></div>
+          </div>
+        `;
       }
+    } else {
+      if (wrapper) wrapper.innerHTML = ''; // remove barra e % quando não estiver ao vivo
     }
+  });
+}
+
+
+// Atualiza automaticamente a cada 30 segundos
+setInterval(atualizarBarrasProgresso, 30000);
+
 
     // ---------- Modal ----------
     function abrirModal(schedule) {
