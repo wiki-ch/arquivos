@@ -3745,7 +3745,7 @@
       "cover": "https://mais.sbt.com.br/_next/image?url=https%3A%2F%2Fstream.maissbt.com%2Fimage%2F784d90ab-6495-450b-b9d7-219ef9e8acef%2F1280x720%2F10m13s%2Fimage.jpeg&w=640&q=75",
       "time": "26",
       "enabled": true,
-      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
         "14/09/2025"
       ]
@@ -4438,6 +4438,7 @@
     }
   ]
 }
+
 
 
 
