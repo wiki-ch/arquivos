@@ -347,6 +347,20 @@
       "datas": [
         "21/09/2024"
       ]
+    },
+    {
+      "name": "Palavras grosseiras",
+      "reference_id": "6363758492112_chaves_2025_024",
+      "original_title": "Palavras grosseiras",
+      "episode_order_number": "3",
+      "id": "0e8274b4-0f21-48de-8b5f-5467fb37b5ca",
+      "cover": "https://stream.maissbt.com/image/0e8274b4-0f21-48de-8b5f-5467fb37b5ca/1280x720/10m13s/image.jpeg",
+      "time": "10",
+      "enabled": true,
+      "exibicao": "+SBT",
+      "datas": [
+        "27/09/2024"
+      ]
     }
   ],
   "videos_fixos": [
@@ -4665,3 +4679,4 @@
     }
   ]
 }
+
