@@ -405,378 +405,349 @@
 
 
   <!-- Botão voltar ao topo (aparece quando estiver quase no fim da página) -->
-  <button id="btnTopo" aria-label="Voltar ao topo" title="Voltar ao topo">▲</button>
-  <script>
-    // ---------- Configurações ----------
-    const API_URL = gerarURL();
-    const lotes = [
-      { startDate: new Date(2025, 7, 4), epStart: 1 },   // 04/08/2025
-      { startDate: new Date(2025, 8, 9), epStart: 100 }  // 09/09/2025
-    ];
-    let selectedDate = new Date(); // Data escolhida no seletor
+<!-- Botão voltar ao topo (aparece quando estiver quase no fim da página) -->
+<button id="btnTopo" aria-label="Voltar ao topo" title="Voltar ao topo">▲</button>
+<script>
+  // ---------- Configurações ----------
+  const API_URL = gerarURL();
+  const lotes = [
+    { startDate: new Date(2025, 7, 4), epStart: 1, tipo: "uteis" },         // 04/08/2025 → seg a sex (EP 1–99)
+    { startDate: new Date(2025, 8, 9), epStart: 100, tipo: "terQuaQui" },   // 09/09/2025 → ter/qua/qui (EP 100–111)
+    { startDate: new Date(2025, 9, 6), epStart: 112, tipo: "terQui" }       // 06/10/2025 → ter/qui (EP 112–199)
+  ];
+  let selectedDate = new Date(); // Data escolhida no seletor
 
-    function gerarURL() {
-      const agora = Math.floor(Date.now() / 1000);
-      //const startTime = agora - (4 * 60 * 60);
-      const startTime = 1754290800;
-      const endTime = agora + (10 * 365 * 24 * 60 * 60);
-      return `https://www.clarotvmais.com.br/avsclient/1.2/epg/livechannels?types=&channelIds=98&startTime=${startTime}&endTime=${endTime}&onlyUserContent=&location=FLORIANOPOLIS,SANTA%20CATARINA&channel=PCTV`;
-    }
-
-    // ---------- Helpers ----------
-    function normalizeText(s) {
-      if (!s) return '';
-      return s.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/gi, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
-    }
-    function extractNumberFromString(s) {
-      if (!s) return NaN;
-      const nums = s.toString().match(/\d{1,4}/g);
-      if (!nums) return NaN;
-      return parseInt(nums[nums.length - 1], 10);
-    }
-    function diasUteis(startDate, dataAtual) {
-      let dias = 0;
-      const temp = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-      while (temp <= dataAtual) {
-        const day = temp.getDay();
-        if (day !== 0 && day !== 6) dias++;
-        temp.setDate(temp.getDate() + 1);
-      }
-      return dias;
-    }
-    function diasTerQuaQui(startDate, dataAtual) {
-      let dias = 0;
-      const temp = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-      while (temp <= dataAtual) {
-        const day = temp.getDay();
-        if (day === 2 || day === 3 || day === 4) dias++;
-        temp.setDate(temp.getDate() + 1);
-      }
-      return dias;
-    }
-    function inferEpisodeNumber(schedule) {
-      let n = extractNumberFromString(schedule.episodeNumber || '');
-      if (Number.isFinite(n) && n > 0) return n;
-      n = extractNumberFromString(schedule.episodeName || '');
-      if (Number.isFinite(n) && n > 0) return n;
-      const desc = schedule.description || '';
-      const m = desc.match(/(?:ep(?:is[oó]dio)?\.?\s*|e\s*[:-]?\s*|episodio\s*)(\d{1,4})/i);
-      if (m && m[1]) return parseInt(m[1], 10);
-      n = extractNumberFromString(desc);
-      if (Number.isFinite(n) && n > 0) return n;
-      return NaN;
-    }
-
-    // ---------- Seletor de Dias ----------
-    // ---------- Seletor de Dias ----------
-    function renderDaySelector() {
-      const container = document.getElementById("day-selector");
-      container.innerHTML = "";
-
-      const baseDate = new Date("2025-08-04");
-      const today = new Date();
-      const diffDays = Math.floor((today - baseDate) / (1000 * 60 * 60 * 24));
-
-      for (let offset = 0; offset <= diffDays + 21; offset++) {
-        const d = new Date(baseDate);
-        d.setDate(baseDate.getDate() + offset);
-
-        const btn = document.createElement("button");
-        btn.innerText = d.toLocaleDateString("pt-BR", {
-          weekday: "short", day: "2-digit", month: "2-digit"
-        });
-
-        if (d.toDateString() === selectedDate.toDateString()) {
-          btn.classList.add("active");
-        }
-
-        btn.addEventListener("click", () => {
-          selectedDate = new Date(d);
-          renderDaySelector();
-          fetchData();
-        });
-
-        container.appendChild(btn);
-      }
-
-      // >>> Centralizar automaticamente o dia selecionado
-      const activeBtn = container.querySelector(".active");
-      if (activeBtn) {
-        const offset = activeBtn.offsetLeft - (container.clientWidth / 2) + (activeBtn.clientWidth / 2);
-        container.scrollTo({ left: offset, behavior: "smooth" });
-      }
-    }
-
-    // -------- Navegação das setas --------
-    document.getElementById("prev-day").addEventListener("click", () => {
-      const container = document.getElementById("day-selector");
-      container.scrollBy({ left: -200, behavior: "smooth" });
-    });
-
-    document.getElementById("next-day").addEventListener("click", () => {
-      const container = document.getElementById("day-selector");
-      container.scrollBy({ left: 200, behavior: "smooth" });
-    });
-
-    // Inicializa
-    renderDaySelector();
-
-
-    // ---------- Navegação por setas ----------
-    document.getElementById("prev-day").addEventListener("click", () => {
-      const container = document.getElementById("day-selector");
-      container.scrollBy({ left: -200, behavior: "smooth" });
-    });
-
-    document.getElementById("next-day").addEventListener("click", () => {
-      const container = document.getElementById("day-selector");
-      container.scrollBy({ left: 200, behavior: "smooth" });
-    });
-
-
-
-    // ---------- Fetch e Render ----------
-    async function fetchData() {
-      try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        renderData(data.response.liveChannels[0]);
-      } catch (error) {
-        const content = document.getElementById('content');
-        content.innerHTML = `
-      <div class="program-card error-box">
-        <p style="color:red; font-weight:bold;">
-          ⚠️ O navegador bloqueou o acesso à API do EPG (CORS).
-        </p>
-        <p>
-          Ative a extensão 
-          <a href="https://chrome.google.com/webstore/detail/lhobafahddgcelffkeicbaginigeejlf" target="_blank">
-            Habilitar CORS
-          </a> no Chrome.
-        </p>
-        <p><em>Erro técnico original: ${error.message}</em></p>
-      </div>
-    `;
-      }
-    }
-
-
-async function renderData(channel) {
-  const container = document.getElementById('content');
-  container.innerHTML = '';
-
-  const episodeData = await fetch("https://wiki-ch.github.io/arquivos/msw_formatado.json")
-    .then(r => r.json())
-    .catch(_ => ({ lote_chaves: [], lote_chapolin: [] }));
-
-  const getEpisodeTitle = (program, epNumber) => {
-    const list = program === "Chaves" ? episodeData.lote_chaves : episodeData.lote_chapolin;
-    const match = list.find(ep => ep.numero === String(epNumber).padStart(3, '0'));
-    return match ? match.titulo : '';
-  };
-
-  channel.schedules.sort((a, b) => a.startTime - b.startTime);
-  const filteredSchedules = channel.schedules.filter(s => s.title === "Chaves" || s.title === "Chapolin");
-
-  // Filtra pelo dia escolhido
-  const groupedByDate = {};
-  filteredSchedules.forEach(schedule => {
-    const start = new Date(schedule.startTime * 1000);
-    if (start.toDateString() !== selectedDate.toDateString()) return; // só o dia escolhido
-    const key = start.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'America/Sao_Paulo' });
-    if (!groupedByDate[key]) groupedByDate[key] = [];
-    groupedByDate[key].push(schedule);
-  });
-
-  for (const [date, schedules] of Object.entries(groupedByDate)) {
-    const dateGroup = document.createElement('div');
-    dateGroup.className = 'date-group';
-    const title = document.createElement('div');
-    title.className = 'date-title';
-    title.innerText = date;
-    dateGroup.appendChild(title);
-
-    const channelBox = document.createElement('div');
-    channelBox.className = 'channel-group';
-
-    schedules.forEach(schedule => {
-      const sched = document.createElement('div');
-      sched.className = 'schedule';
-
-      const inicio = new Date(schedule.startTime * 1000);
-      const fim = new Date(schedule.endTime * 1000);
-
-      const epNum = inferEpisodeNumber(schedule);
-      const episodeTitle = getEpisodeTitle(schedule.title, epNum) || '';
-      const fullTitle = `${schedule.title} - D${String(schedule.seasonNumber || '').padStart(2, '0')}:E${String(epNum || '').padStart(2, '0')} - ${episodeTitle}`;
-
-      let color = "orange";
-      const dayOfWeek = inicio.getDay();
-      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-        lotes.forEach((lote, idx) => {
-          let dias, diasValidos;
-          if (idx === 1) {
-            diasValidos = [2, 3, 4];
-            if (!diasValidos.includes(dayOfWeek)) return;
-            dias = diasTerQuaQui(lote.startDate, inicio);
-          } else {
-            dias = diasUteis(lote.startDate, inicio);
-          }
-          const epEsperado = lote.epStart + dias - 1;
-          if (epNum === epEsperado) {
-            color = schedule.title === "Chaves" ? "green" : "red";
-          }
-        });
-      }
-
-sched.innerHTML = `
-  <div class="schedule-grid">
-    <div class="logo-box" style="border: 2px solid ${color};">
-      <img src="${schedule.title === 'Chaves'
-              ? 'https://i.ibb.co/jvrnZDq2/logo-standard-poster-2x3-chaves.png'
-              : 'https://i.ibb.co/7tBN0Qjg/chapolin-logo-png-seeklogo-208768.png'}"
-        alt="${schedule.title}">
-    </div>
-
-    <div class="schedule-info">
-      <div class="formatted-time">
-        ${inicio.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}, 
-        das ${inicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} 
-        às ${fim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-      </div>
-      <div class="schedule-title">
-        <strong><font color="${color}">${fullTitle}</font></strong>
-      </div>
-      <div class="schedule-description">
-        <font size="2">Sinopse: ${schedule.description || 'Não disponível'}</font>
-      </div>
-      <div class="progress-wrapper"></div> <!-- AQUI VAI FICAR A BARRA E % -->
-    </div>	
-  </div> 
-`;
-
-      sched.style.cursor = 'pointer';
-      sched.addEventListener('click', () => abrirModal(schedule));
-
-      // Adiciona data-attributes para controle da barra
-      sched.dataset.startTime = schedule.startTime;
-      sched.dataset.endTime = schedule.endTime;
-
-      channelBox.appendChild(sched);
-    });
-
-    dateGroup.appendChild(channelBox);
-
-    // Linha de nota
-    const aviso = document.createElement("div");
-    aviso.style.textAlign = "center";
-    aviso.style.color = "#007bff";
-    aviso.innerText = "* NOTA: O Canal costuma alterar o nome do episódio até a data de exibição.";
-    dateGroup.appendChild(aviso);
-
-    container.appendChild(dateGroup);
+  function gerarURL() {
+    const agora = Math.floor(Date.now() / 1000);
+    const startTime = 1754290800;
+    const endTime = agora + (10 * 365 * 24 * 60 * 60);
+    return `https://www.clarotvmais.com.br/avsclient/1.2/epg/livechannels?types=&channelIds=98&startTime=${startTime}&endTime=${endTime}&onlyUserContent=&location=FLORIANOPOLIS,SANTA%20CATARINA&channel=PCTV`;
   }
 
-  // Atualiza as barras de progresso ao carregar
-  atualizarBarrasProgresso();
-}
-
-// ---------- Função de barra de progresso dinâmica ----------
-function atualizarBarrasProgresso() {
-  const nowTs = Math.floor(Date.now() / 1000);
-  const barras = document.querySelectorAll('.schedule');
-
-  barras.forEach(sched => {
-    const startTime = parseInt(sched.dataset.startTime, 10);
-    const endTime = parseInt(sched.dataset.endTime, 10);
-    const wrapper = sched.querySelector('.progress-wrapper');
-
-    if (nowTs >= startTime && nowTs <= endTime) {
-      const progress = ((nowTs - startTime) / (endTime - startTime)) * 100;
-
-      if (wrapper) {
-        wrapper.innerHTML = `
-          <div class="progress-text">${Math.round(progress)}%</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar" style="width:${Math.round(progress)}%"></div>
-          </div>
-        `;
-      }
-    } else {
-      if (wrapper) wrapper.innerHTML = ''; // remove barra e % quando não estiver ao vivo
+  // ---------- Helpers ----------
+  function normalizeText(s) {
+    if (!s) return '';
+    return s.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/gi, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+  }
+  function extractNumberFromString(s) {
+    if (!s) return NaN;
+    const nums = s.toString().match(/\d{1,4}/g);
+    if (!nums) return NaN;
+    return parseInt(nums[nums.length - 1], 10);
+  }
+  function diasUteis(startDate, dataAtual) {
+    let dias = 0;
+    const temp = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    while (temp <= dataAtual) {
+      const day = temp.getDay();
+      if (day !== 0 && day !== 6) dias++;
+      temp.setDate(temp.getDate() + 1);
     }
+    return dias;
+  }
+  function diasTerQuaQui(startDate, dataAtual) {
+    let dias = 0;
+    const temp = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    while (temp <= dataAtual) {
+      const day = temp.getDay();
+      if (day === 2 || day === 3 || day === 4) dias++;
+      temp.setDate(temp.getDate() + 1);
+    }
+    return dias;
+  }
+  function diasTerQui(startDate, dataAtual) {
+    let dias = 0;
+    const temp = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    while (temp <= dataAtual) {
+      const day = temp.getDay();
+      if (day === 2 || day === 4) dias++; // terça e quinta
+      temp.setDate(temp.getDate() + 1);
+    }
+    return dias;
+  }
+  function inferEpisodeNumber(schedule) {
+    let n = extractNumberFromString(schedule.episodeNumber || '');
+    if (Number.isFinite(n) && n > 0) return n;
+    n = extractNumberFromString(schedule.episodeName || '');
+    if (Number.isFinite(n) && n > 0) return n;
+    const desc = schedule.description || '';
+    const m = desc.match(/(?:ep(?:is[oó]dio)?\.?\s*|e\s*[:-]?\s*|episodio\s*)(\d{1,4})/i);
+    if (m && m[1]) return parseInt(m[1], 10);
+    n = extractNumberFromString(desc);
+    if (Number.isFinite(n) && n > 0) return n;
+    return NaN;
+  }
+
+  // ---------- Seletor de Dias ----------
+  function renderDaySelector() {
+    const container = document.getElementById("day-selector");
+    container.innerHTML = "";
+
+    const baseDate = new Date("2025-08-04");
+    const today = new Date();
+    const diffDays = Math.floor((today - baseDate) / (1000 * 60 * 60 * 24));
+
+    for (let offset = 0; offset <= diffDays + 21; offset++) {
+      const d = new Date(baseDate);
+      d.setDate(baseDate.getDate() + offset);
+
+      const btn = document.createElement("button");
+      btn.innerText = d.toLocaleDateString("pt-BR", {
+        weekday: "short", day: "2-digit", month: "2-digit"
+      });
+
+      if (d.toDateString() === selectedDate.toDateString()) {
+        btn.classList.add("active");
+      }
+
+      btn.addEventListener("click", () => {
+        selectedDate = new Date(d);
+        renderDaySelector();
+        fetchData();
+      });
+
+      container.appendChild(btn);
+    }
+
+    // >>> Centralizar automaticamente o dia selecionado
+    const activeBtn = container.querySelector(".active");
+    if (activeBtn) {
+      const offset = activeBtn.offsetLeft - (container.clientWidth / 2) + (activeBtn.clientWidth / 2);
+      container.scrollTo({ left: offset, behavior: "smooth" });
+    }
+  }
+
+  // -------- Navegação das setas --------
+  document.getElementById("prev-day").addEventListener("click", () => {
+    const container = document.getElementById("day-selector");
+    container.scrollBy({ left: -200, behavior: "smooth" });
   });
-}
 
+  document.getElementById("next-day").addEventListener("click", () => {
+    const container = document.getElementById("day-selector");
+    container.scrollBy({ left: 200, behavior: "smooth" });
+  });
 
-// Atualiza automaticamente a cada 30 segundos
-setInterval(atualizarBarrasProgresso, 10000);
+  // Inicializa
+  renderDaySelector();
 
+  // ---------- Fetch e Render ----------
+  async function fetchData() {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      renderData(data.response.liveChannels[0]);
+    } catch (error) {
+      const content = document.getElementById('content');
+      content.innerHTML = `
+        <div class="program-card error-box">
+          <p style="color:red; font-weight:bold;">
+            ⚠️ O navegador bloqueou o acesso à API do EPG (CORS).
+          </p>
+          <p>
+            Ative a extensão 
+            <a href="https://chrome.google.com/webstore/detail/lhobafahddgcelffkeicbaginigeejlf" target="_blank">
+              Habilitar CORS
+            </a> no Chrome.
+          </p>
+          <p><em>Erro técnico original: ${error.message}</em></p>
+        </div>`;
+    }
+  }
 
-    // ---------- Modal ----------
-    function abrirModal(schedule) {
-      try {
+  async function renderData(channel) {
+    const container = document.getElementById('content');
+    container.innerHTML = '';
+
+    const episodeData = await fetch("https://wiki-ch.github.io/arquivos/msw_formatado.json")
+      .then(r => r.json())
+      .catch(_ => ({ lote_chaves: [], lote_chapolin: [] }));
+
+    const getEpisodeTitle = (program, epNumber) => {
+      const list = program === "Chaves" ? episodeData.lote_chaves : episodeData.lote_chapolin;
+      const match = list.find(ep => ep.numero === String(epNumber).padStart(3, '0'));
+      return match ? match.titulo : '';
+    };
+
+    channel.schedules.sort((a, b) => a.startTime - b.startTime);
+    const filteredSchedules = channel.schedules.filter(s => s.title === "Chaves" || s.title === "Chapolin");
+
+    // Filtra pelo dia escolhido
+    const groupedByDate = {};
+    filteredSchedules.forEach(schedule => {
+      const start = new Date(schedule.startTime * 1000);
+      if (start.toDateString() !== selectedDate.toDateString()) return;
+      const key = start.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'America/Sao_Paulo' });
+      if (!groupedByDate[key]) groupedByDate[key] = [];
+      groupedByDate[key].push(schedule);
+    });
+
+    for (const [date, schedules] of Object.entries(groupedByDate)) {
+      const dateGroup = document.createElement('div');
+      dateGroup.className = 'date-group';
+      const title = document.createElement('div');
+      title.className = 'date-title';
+      title.innerText = date;
+      dateGroup.appendChild(title);
+
+      const channelBox = document.createElement('div');
+      channelBox.className = 'channel-group';
+
+      schedules.forEach(schedule => {
+        const sched = document.createElement('div');
+        sched.className = 'schedule';
+
         const inicio = new Date(schedule.startTime * 1000);
         const fim = new Date(schedule.endTime * 1000);
-        const formatarHora = d => d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-        document.getElementById("modal-title").innerText = `${schedule.title} (T${schedule.seasonNumber || 1}:E${schedule.episodeNumber || 1})`;
-        document.getElementById("modal-meta").innerHTML = `
-      ${inicio.toLocaleDateString('pt-BR')} — ${formatarHora(inicio)} até ${formatarHora(fim)}<br>
-      Duração: ${Math.round((schedule.endTime - schedule.startTime) / 60)} min<br>
-      Classificação: ${schedule.rating?.code || 'N/A'} — ${schedule.rating?.descriptor?.join(',') || ''}
-    `;
-        document.getElementById("modal-description").innerText = schedule.description || 'Sem descrição disponível.';
-        document.getElementById("modal-header").style.backgroundImage = `url('${(schedule.image || '').replace('{{image-size-placeholder}}', '640_360')}')`;
-        document.getElementById("modal").style.display = 'flex';
-      } catch (err) { console.error(err); alert('Erro ao abrir modal.'); }
-    }
 
+        const epNum = inferEpisodeNumber(schedule);
+        const episodeTitle = getEpisodeTitle(schedule.title, epNum) || '';
+        const fullTitle = `${schedule.title} - D${String(schedule.seasonNumber || '').padStart(2, '0')}:E${String(epNum || '').padStart(2, '0')} - ${episodeTitle}`;
 
-    // ---------- Inicializa ----------
-    renderDaySelector();
-    fetchData();
+        let color = "orange";
+        const dayOfWeek = inicio.getDay();
 
+        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+          lotes.forEach(lote => {
+            let dias = 0;
+            if (lote.tipo === "uteis") {
+              if (dayOfWeek === 0 || dayOfWeek === 6) return;
+              dias = diasUteis(lote.startDate, inicio);
+            } else if (lote.tipo === "terQuaQui") {
+              const diasValidos = [2, 3, 4];
+              if (!diasValidos.includes(dayOfWeek)) return;
+              dias = diasTerQuaQui(lote.startDate, inicio);
+            } else if (lote.tipo === "terQui") {
+              const diasValidos = [2, 4];
+              if (!diasValidos.includes(dayOfWeek)) return;
+              dias = diasTerQui(lote.startDate, inicio);
+            }
 
-
-    /* =========================
-       BOTÃO VOLTAR AO TOPO (COMPORTAMENTO)
-       - Aparece quando o usuário rola para baixo
-       - Ao clicar, faz scroll suave até o topo
-       - Herda a cor do tema atual
-       ========================= */
-    const btnTopo = document.getElementById('btnTopo');
-
-    function checkShowBtn() {
-      try {
-        if (window.pageYOffset > 300) { // aparece após 300px de scroll
-          btnTopo.classList.add('visible');
-        } else {
-          btnTopo.classList.remove('visible');
+            const epEsperado = lote.epStart + dias - 1;
+            if (epNum === epEsperado) {
+              color = schedule.title === "Chaves" ? "green" : "red";
+            }
+          });
         }
-      } catch (e) { /* ignora se btn não encontrado */ }
+
+        sched.innerHTML = `
+          <div class="schedule-grid">
+            <div class="logo-box" style="border: 2px solid ${color};">
+              <img src="${schedule.title === 'Chaves'
+                ? 'https://i.ibb.co/jvrnZDq2/logo-standard-poster-2x3-chaves.png'
+                : 'https://i.ibb.co/7tBN0Qjg/chapolin-logo-png-seeklogo-208768.png'}"
+                alt="${schedule.title}">
+            </div>
+            <div class="schedule-info">
+              <div class="formatted-time">
+                ${inicio.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}, 
+                das ${inicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} 
+                às ${fim.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+              </div>
+              <div class="schedule-title">
+                <strong><font color="${color}">${fullTitle}</font></strong>
+              </div>
+              <div class="schedule-description">
+                <font size="2">Sinopse: ${schedule.description || 'Não disponível'}</font>
+              </div>
+              <div class="progress-wrapper"></div>
+            </div>	
+          </div> 
+        `;
+
+        sched.style.cursor = 'pointer';
+        sched.addEventListener('click', () => abrirModal(schedule));
+        sched.dataset.startTime = schedule.startTime;
+        sched.dataset.endTime = schedule.endTime;
+        channelBox.appendChild(sched);
+      });
+
+      dateGroup.appendChild(channelBox);
+      const aviso = document.createElement("div");
+      aviso.style.textAlign = "center";
+      aviso.style.color = "#007bff";
+      aviso.innerText = "* NOTA: O Canal costuma alterar o nome do episódio até a data de exibição.";
+      dateGroup.appendChild(aviso);
+      container.appendChild(dateGroup);
     }
+    atualizarBarrasProgresso();
+  }
 
-    window.addEventListener('scroll', checkShowBtn, { passive: true });
-    window.addEventListener('resize', checkShowBtn);
-
-    document.addEventListener('DOMContentLoaded', () => {
-      checkShowBtn();
-      updateBackToTopTheme();
-    });
-
-    btnTopo.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // Observa mudanças na classe do body (tema)
-    const observer = new MutationObserver(muts => {
-      for (const m of muts) {
-        if (m.attributeName === 'class') updateBackToTopTheme();
+  // ---------- Função de barra de progresso dinâmica ----------
+  function atualizarBarrasProgresso() {
+    const nowTs = Math.floor(Date.now() / 1000);
+    const barras = document.querySelectorAll('.schedule');
+    barras.forEach(sched => {
+      const startTime = parseInt(sched.dataset.startTime, 10);
+      const endTime = parseInt(sched.dataset.endTime, 10);
+      const wrapper = sched.querySelector('.progress-wrapper');
+      if (nowTs >= startTime && nowTs <= endTime) {
+        const progress = ((nowTs - startTime) / (endTime - startTime)) * 100;
+        if (wrapper) {
+          wrapper.innerHTML = `
+            <div class="progress-text">${Math.round(progress)}%</div>
+            <div class="progress-bar-container">
+              <div class="progress-bar" style="width:${Math.round(progress)}%"></div>
+            </div>
+          `;
+        }
+      } else {
+        if (wrapper) wrapper.innerHTML = '';
       }
     });
-    observer.observe(document.body, { attributes: true });
+  }
+  setInterval(atualizarBarrasProgresso, 10000);
 
-  </script>
+  // ---------- Modal ----------
+  function abrirModal(schedule) {
+    try {
+      const inicio = new Date(schedule.startTime * 1000);
+      const fim = new Date(schedule.endTime * 1000);
+      const formatarHora = d => d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById("modal-title").innerText = `${schedule.title} (T${schedule.seasonNumber || 1}:E${schedule.episodeNumber || 1})`;
+      document.getElementById("modal-meta").innerHTML = `
+        ${inicio.toLocaleDateString('pt-BR')} — ${formatarHora(inicio)} até ${formatarHora(fim)}<br>
+        Duração: ${Math.round((schedule.endTime - schedule.startTime) / 60)} min<br>
+        Classificação: ${schedule.rating?.code || 'N/A'} — ${schedule.rating?.descriptor?.join(',') || ''}
+      `;
+      document.getElementById("modal-description").innerText = schedule.description || 'Sem descrição disponível.';
+      document.getElementById("modal-header").style.backgroundImage = `url('${(schedule.image || '').replace('{{image-size-placeholder}}', '640_360')}')`;
+      document.getElementById("modal").style.display = 'flex';
+    } catch (err) { console.error(err); alert('Erro ao abrir modal.'); }
+  }
+
+  // ---------- Inicializa ----------
+  renderDaySelector();
+  fetchData();
+
+  // ---------- Botão Voltar ao Topo ----------
+  const btnTopo = document.getElementById('btnTopo');
+  function checkShowBtn() {
+    try {
+      if (window.pageYOffset > 300) {
+        btnTopo.classList.add('visible');
+      } else {
+        btnTopo.classList.remove('visible');
+      }
+    } catch (e) {}
+  }
+  window.addEventListener('scroll', checkShowBtn, { passive: true });
+  window.addEventListener('resize', checkShowBtn);
+  document.addEventListener('DOMContentLoaded', () => {
+    checkShowBtn();
+    updateBackToTopTheme();
+  });
+  btnTopo.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  const observer = new MutationObserver(muts => {
+    for (const m of muts) {
+      if (m.attributeName === 'class') updateBackToTopTheme();
+    }
+  });
+  observer.observe(document.body, { attributes: true });
+</script>
+
 
 
   <footer id="mainFooter">
