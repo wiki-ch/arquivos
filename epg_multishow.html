@@ -410,11 +410,6 @@
 <script>
   // ---------- Configurações ----------
   const API_URL = gerarURL();
-  const lotes = [
-    { startDate: new Date(2025, 7, 4), epStart: 1, tipo: "uteis" },         // 04/08/2025 → seg a sex (EP 1–99)
-    { startDate: new Date(2025, 8, 9), epStart: 100, tipo: "terQuaQui" },   // 09/09/2025 → ter/qua/qui (EP 100–111)
-    { startDate: new Date(2025, 9, 6), epStart: 112, tipo: "terQui" }       // 06/10/2025 → ter/qui (EP 112–199)
-  ];
   let selectedDate = new Date(); // Data escolhida no seletor
 
   function gerarURL() {
@@ -429,42 +424,14 @@
     if (!s) return '';
     return s.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/gi, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
   }
+
   function extractNumberFromString(s) {
     if (!s) return NaN;
     const nums = s.toString().match(/\d{1,4}/g);
     if (!nums) return NaN;
     return parseInt(nums[nums.length - 1], 10);
   }
-  function diasUteis(startDate, dataAtual) {
-    let dias = 0;
-    const temp = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-    while (temp <= dataAtual) {
-      const day = temp.getDay();
-      if (day !== 0 && day !== 6) dias++;
-      temp.setDate(temp.getDate() + 1);
-    }
-    return dias;
-  }
-  function diasTerQuaQui(startDate, dataAtual) {
-    let dias = 0;
-    const temp = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-    while (temp <= dataAtual) {
-      const day = temp.getDay();
-      if (day === 2 || day === 3 || day === 4) dias++;
-      temp.setDate(temp.getDate() + 1);
-    }
-    return dias;
-  }
-  function diasTerQui(startDate, dataAtual) {
-    let dias = 0;
-    const temp = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-    while (temp <= dataAtual) {
-      const day = temp.getDay();
-      if (day === 2 || day === 4) dias++; // terça e quinta
-      temp.setDate(temp.getDate() + 1);
-    }
-    return dias;
-  }
+
   function inferEpisodeNumber(schedule) {
     let n = extractNumberFromString(schedule.episodeNumber || '');
     if (Number.isFinite(n) && n > 0) return n;
@@ -509,7 +476,6 @@
       container.appendChild(btn);
     }
 
-    // >>> Centralizar automaticamente o dia selecionado
     const activeBtn = container.querySelector(".active");
     if (activeBtn) {
       const offset = activeBtn.offsetLeft - (container.clientWidth / 2) + (activeBtn.clientWidth / 2);
@@ -517,7 +483,6 @@
     }
   }
 
-  // -------- Navegação das setas --------
   document.getElementById("prev-day").addEventListener("click", () => {
     const container = document.getElementById("day-selector");
     container.scrollBy({ left: -200, behavior: "smooth" });
@@ -528,7 +493,6 @@
     container.scrollBy({ left: 200, behavior: "smooth" });
   });
 
-  // Inicializa
   renderDaySelector();
 
   // ---------- Fetch e Render ----------
@@ -569,10 +533,18 @@
       return match ? match.titulo : '';
     };
 
+    // ---- NOVA LÓGICA DE COR ----
     channel.schedules.sort((a, b) => a.startTime - b.startTime);
     const filteredSchedules = channel.schedules.filter(s => s.title === "Chaves" || s.title === "Chapolin");
 
-    // Filtra pelo dia escolhido
+    // Criar lista de todos episódios para comparação
+    const todosEps = filteredSchedules.map(s => ({
+      title: s.title,
+      num: inferEpisodeNumber(s),
+      startTime: s.startTime
+    }));
+
+    // Agrupa pelo dia escolhido
     const groupedByDate = {};
     filteredSchedules.forEach(schedule => {
       const start = new Date(schedule.startTime * 1000);
@@ -599,35 +571,25 @@
 
         const inicio = new Date(schedule.startTime * 1000);
         const fim = new Date(schedule.endTime * 1000);
-
         const epNum = inferEpisodeNumber(schedule);
+
         const episodeTitle = getEpisodeTitle(schedule.title, epNum) || '';
         const fullTitle = `${schedule.title} - D${String(schedule.seasonNumber || '').padStart(2, '0')}:E${String(epNum || '').padStart(2, '0')} - ${episodeTitle}`;
 
-        let color = "orange";
-        const dayOfWeek = inicio.getDay();
+        let color = "orange"; // padrão
+        if (Number.isFinite(epNum)) {
+          // Verifica se esse episódio já passou antes
+          const jaExibido = todosEps.some(e =>
+            e.title === schedule.title &&
+            e.num === epNum &&
+            e.startTime < schedule.startTime
+          );
 
-        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-          lotes.forEach(lote => {
-            let dias = 0;
-            if (lote.tipo === "uteis") {
-              if (dayOfWeek === 0 || dayOfWeek === 6) return;
-              dias = diasUteis(lote.startDate, inicio);
-            } else if (lote.tipo === "terQuaQui") {
-              const diasValidos = [2, 3, 4];
-              if (!diasValidos.includes(dayOfWeek)) return;
-              dias = diasTerQuaQui(lote.startDate, inicio);
-            } else if (lote.tipo === "terQui") {
-              const diasValidos = [2, 4];
-              if (!diasValidos.includes(dayOfWeek)) return;
-              dias = diasTerQui(lote.startDate, inicio);
-            }
-
-            const epEsperado = lote.epStart + dias - 1;
-            if (epNum === epEsperado) {
-              color = schedule.title === "Chaves" ? "green" : "red";
-            }
-          });
+          if (jaExibido) {
+            color = "gold"; // reprise
+          } else {
+            color = schedule.title === "Chaves" ? "green" : "red"; // estreia
+          }
         }
 
         sched.innerHTML = `
@@ -670,10 +632,11 @@
       dateGroup.appendChild(aviso);
       container.appendChild(dateGroup);
     }
+
     atualizarBarrasProgresso();
   }
 
-  // ---------- Função de barra de progresso dinâmica ----------
+  // ---------- Barra de progresso ----------
   function atualizarBarrasProgresso() {
     const nowTs = Math.floor(Date.now() / 1000);
     const barras = document.querySelectorAll('.schedule');
@@ -724,29 +687,27 @@
   const btnTopo = document.getElementById('btnTopo');
   function checkShowBtn() {
     try {
-      if (window.pageYOffset > 300) {
-        btnTopo.classList.add('visible');
-      } else {
-        btnTopo.classList.remove('visible');
-      }
+      if (window.pageYOffset > 300) btnTopo.classList.add('visible');
+      else btnTopo.classList.remove('visible');
     } catch (e) {}
   }
   window.addEventListener('scroll', checkShowBtn, { passive: true });
   window.addEventListener('resize', checkShowBtn);
   document.addEventListener('DOMContentLoaded', () => {
     checkShowBtn();
-    updateBackToTopTheme();
+    updateBackToTopTheme?.();
   });
   btnTopo.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
   const observer = new MutationObserver(muts => {
     for (const m of muts) {
-      if (m.attributeName === 'class') updateBackToTopTheme();
+      if (m.attributeName === 'class') updateBackToTopTheme?.();
     }
   });
   observer.observe(document.body, { attributes: true });
 </script>
+
 
 
 
