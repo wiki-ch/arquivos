@@ -14,13 +14,29 @@
       padding: 0;
     }
 
-    /* Header */
     .main-header {
       background: #0d0d0d;
-      /* preto sólido no cabeçalho */
-      text-align: center;
       padding: 20px;
       border-bottom: 2px solid #222;
+    }
+
+    /* Flex no topo do header */
+    .header-top {
+      display: flex;
+      align-items: center;
+      /* alinha verticalmente */
+      justify-content: space-between;
+      /* título à esquerda, toggle à direita */
+      flex-wrap: wrap;
+      /* permite quebrar em telas pequenas */
+    }
+
+    /* Mantém título e legendas juntos */
+    .title-legend {
+      margin-left: 250px;
+      /* ajuste o valor como quiser */
+      display: flex;
+      flex-direction: column;
     }
 
     .main-header h1 {
@@ -30,12 +46,14 @@
     }
 
     .legend {
-      margin-top: 10px;
+      margin-top: 8px;
       font-size: 14px;
     }
 
     .legend span {
-      margin: 0 10px;
+      font-size: 0.75rem;
+      /* ou 12px */
+      margin-right: 10px;
     }
 
     /* Seletor de dias */
@@ -124,37 +142,38 @@
     }
 
 
-	
-	
-.progress-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-}
 
-.progress-text {
-  font-size: 14px;
-  color: #fff;
-  min-width: 40px; /* fixa largura p/ alinhar certinho */
-  text-align: right;
-}
 
-.progress-bar-container {
-  background-color: #222;
-  height: 8px;
-  border-radius: 4px;
-  overflow: hidden;
-  flex: 1;
-}
+    .progress-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
 
-.progress-bar {
-  background-color: #f44336;
-  height: 100%;
-}
-	
-	
-	
+    .progress-text {
+      font-size: 14px;
+      color: #fff;
+      min-width: 40px;
+      /* fixa largura p/ alinhar certinho */
+      text-align: right;
+    }
+
+    .progress-bar-container {
+      background-color: #222;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .progress-bar {
+      background-color: #f44336;
+      height: 100%;
+    }
+
+
+
 
     /* Modal */
     #modal {
@@ -358,37 +377,111 @@
       border: 1px solid red;
       background-color: #1a0000;
     }
+
+    .hide-reprises .schedule.reprise {
+      display: none !important;
+    }
+
+    /* Toggle */
+    .toggle-container {
+      margin-right: 250px;
+      /* puxa um pouco pra esquerda */
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 0;
+      /* remove margem que empurraria pra baixo */
+    }
+
+    /* Mantém o switch igual ao seu */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    .switch input:checked+.slider {
+      background-color: #f4c542;
+      /* amarelo quando ativo */
+    }
+
+    .switch input:checked+.slider:before {
+      transform: translateX(26px);
+    }
   </style>
 
 </head>
 
 <body>
   <!-- HEADER BONITO -->
+  <!-- HEADER BONITO -->
   <div class="main-header">
-    <h1>📺 Programação CH no Multishow</h1>
-    <div class="legend">
-      <span style="color: green;">● Chaves (ao vivo)</span>
-      <span style="color: red;">● Chapolin (ao vivo)</span>
-      <span style="color: orange;">● Reprise</span>
+    <div class="header-top">
+      <div class="title-legend">
+        <h1>PROGRAMAÇÃO CH NO MULTISHOW</h1>
+        <div class="legend">
+          <span style="color: green;">● Chaves (ao vivo)</span>
+          <span style="color: red;">● Chapolin (ao vivo)</span>
+          <span style="color: orange;">● Reprise</span>
+        </div>
+      </div>
+
+      <!-- INTERRUPTOR ADICIONADO -->
+      <div class="toggle-container">
+        <label for="toggleReprise">Mostrar reprises</label>
+        <label class="switch">
+          <input type="checkbox" id="toggleReprise" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
   </div>
 
   <!-- SELETOR DE DIAS -->
-  <!-- SELETOR DE DIAS -->
-
   <div class="day-selector-wrapper">
     <button id="prev-day">◀</button>
     <div class="day-selector" id="day-selector"></div>
     <button id="next-day">▶</button>
   </div>
+
   <!-- CONTEÚDO -->
   <div id="content">
     <div class="date-group">
       <p class="loading-message">Carregando programação...</p>
     </div>
   </div>
-  
-  
+
   <!-- MODAL -->
   <div id="modal">
     <div id="modal-content">
@@ -403,107 +496,106 @@
     </div>
   </div>
 
+  <!-- Botão voltar ao topo -->
+  <button id="btnTopo" aria-label="Voltar ao topo" title="Voltar ao topo">▲</button>
 
-  <!-- Botão voltar ao topo (aparece quando estiver quase no fim da página) -->
-<!-- Botão voltar ao topo (aparece quando estiver quase no fim da página) -->
-<button id="btnTopo" aria-label="Voltar ao topo" title="Voltar ao topo">▲</button>
-<script>
-  // ---------- Configurações ----------
-  const API_URL = gerarURL();
-  let selectedDate = new Date(); // Data escolhida no seletor
+  <script>
+    // ---------- Configurações ----------
+    const API_URL = gerarURL();
+    let selectedDate = new Date(); // Data escolhida no seletor
 
-  function gerarURL() {
-    const agora = Math.floor(Date.now() / 1000);
-    const startTime = 1754290800;
-    const endTime = agora + (10 * 365 * 24 * 60 * 60);
-    return `https://www.clarotvmais.com.br/avsclient/1.2/epg/livechannels?types=&channelIds=98&startTime=${startTime}&endTime=${endTime}&onlyUserContent=&location=FLORIANOPOLIS,SANTA%20CATARINA&channel=PCTV`;
-  }
+    function gerarURL() {
+      const agora = Math.floor(Date.now() / 1000);
+      const startTime = 1754290800;
+      const endTime = agora + (10 * 365 * 24 * 60 * 60);
+      return `https://www.clarotvmais.com.br/avsclient/1.2/epg/livechannels?types=&channelIds=98&startTime=${startTime}&endTime=${endTime}&onlyUserContent=&location=FLORIANOPOLIS,SANTA%20CATARINA&channel=PCTV`;
+    }
 
-  // ---------- Helpers ----------
-  function normalizeText(s) {
-    if (!s) return '';
-    return s.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/gi, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
-  }
+    // ---------- Helpers ----------
+    function normalizeText(s) {
+      if (!s) return '';
+      return s.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/gi, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+    }
 
-  function extractNumberFromString(s) {
-    if (!s) return NaN;
-    const nums = s.toString().match(/\d{1,4}/g);
-    if (!nums) return NaN;
-    return parseInt(nums[nums.length - 1], 10);
-  }
+    function extractNumberFromString(s) {
+      if (!s) return NaN;
+      const nums = s.toString().match(/\d{1,4}/g);
+      if (!nums) return NaN;
+      return parseInt(nums[nums.length - 1], 10);
+    }
 
-  function inferEpisodeNumber(schedule) {
-    let n = extractNumberFromString(schedule.episodeNumber || '');
-    if (Number.isFinite(n) && n > 0) return n;
-    n = extractNumberFromString(schedule.episodeName || '');
-    if (Number.isFinite(n) && n > 0) return n;
-    const desc = schedule.description || '';
-    const m = desc.match(/(?:ep(?:is[oó]dio)?\.?\s*|e\s*[:-]?\s*|episodio\s*)(\d{1,4})/i);
-    if (m && m[1]) return parseInt(m[1], 10);
-    n = extractNumberFromString(desc);
-    if (Number.isFinite(n) && n > 0) return n;
-    return NaN;
-  }
+    function inferEpisodeNumber(schedule) {
+      let n = extractNumberFromString(schedule.episodeNumber || '');
+      if (Number.isFinite(n) && n > 0) return n;
+      n = extractNumberFromString(schedule.episodeName || '');
+      if (Number.isFinite(n) && n > 0) return n;
+      const desc = schedule.description || '';
+      const m = desc.match(/(?:ep(?:is[oó]dio)?\.?\s*|e\s*[:-]?\s*|episodio\s*)(\d{1,4})/i);
+      if (m && m[1]) return parseInt(m[1], 10);
+      n = extractNumberFromString(desc);
+      if (Number.isFinite(n) && n > 0) return n;
+      return NaN;
+    }
 
-  // ---------- Seletor de Dias ----------
-  function renderDaySelector() {
-    const container = document.getElementById("day-selector");
-    container.innerHTML = "";
+    // ---------- Seletor de Dias ----------
+    function renderDaySelector() {
+      const container = document.getElementById("day-selector");
+      container.innerHTML = "";
 
-    const baseDate = new Date("2025-08-04");
-    const today = new Date();
-    const diffDays = Math.floor((today - baseDate) / (1000 * 60 * 60 * 24));
+      const baseDate = new Date("2025-08-04");
+      const today = new Date();
+      const diffDays = Math.floor((today - baseDate) / (1000 * 60 * 60 * 24));
 
-    for (let offset = 0; offset <= diffDays + 21; offset++) {
-      const d = new Date(baseDate);
-      d.setDate(baseDate.getDate() + offset);
+      for (let offset = 0; offset <= diffDays + 21; offset++) {
+        const d = new Date(baseDate);
+        d.setDate(baseDate.getDate() + offset);
 
-      const btn = document.createElement("button");
-      btn.innerText = d.toLocaleDateString("pt-BR", {
-        weekday: "short", day: "2-digit", month: "2-digit"
-      });
+        const btn = document.createElement("button");
+        btn.innerText = d.toLocaleDateString("pt-BR", {
+          weekday: "short", day: "2-digit", month: "2-digit"
+        });
 
-      if (d.toDateString() === selectedDate.toDateString()) {
-        btn.classList.add("active");
+        if (d.toDateString() === selectedDate.toDateString()) {
+          btn.classList.add("active");
+        }
+
+        btn.addEventListener("click", () => {
+          selectedDate = new Date(d);
+          renderDaySelector();
+          fetchData();
+        });
+
+        container.appendChild(btn);
       }
 
-      btn.addEventListener("click", () => {
-        selectedDate = new Date(d);
-        renderDaySelector();
-        fetchData();
-      });
-
-      container.appendChild(btn);
+      const activeBtn = container.querySelector(".active");
+      if (activeBtn) {
+        const offset = activeBtn.offsetLeft - (container.clientWidth / 2) + (activeBtn.clientWidth / 2);
+        container.scrollTo({ left: offset, behavior: "smooth" });
+      }
     }
 
-    const activeBtn = container.querySelector(".active");
-    if (activeBtn) {
-      const offset = activeBtn.offsetLeft - (container.clientWidth / 2) + (activeBtn.clientWidth / 2);
-      container.scrollTo({ left: offset, behavior: "smooth" });
-    }
-  }
+    document.getElementById("prev-day").addEventListener("click", () => {
+      const container = document.getElementById("day-selector");
+      container.scrollBy({ left: -200, behavior: "smooth" });
+    });
 
-  document.getElementById("prev-day").addEventListener("click", () => {
-    const container = document.getElementById("day-selector");
-    container.scrollBy({ left: -200, behavior: "smooth" });
-  });
+    document.getElementById("next-day").addEventListener("click", () => {
+      const container = document.getElementById("day-selector");
+      container.scrollBy({ left: 200, behavior: "smooth" });
+    });
 
-  document.getElementById("next-day").addEventListener("click", () => {
-    const container = document.getElementById("day-selector");
-    container.scrollBy({ left: 200, behavior: "smooth" });
-  });
+    renderDaySelector();
 
-  renderDaySelector();
-
-  // ---------- Fetch e Render ----------
-  async function fetchData() {
-    try {
-      const response = await fetch(API_URL);
-      const data = await response.json();
-      renderData(data.response.liveChannels[0]);
-    } catch (error) {
-      const content = document.getElementById('content');
-      content.innerHTML = `
+    // ---------- Fetch e Render ----------
+    async function fetchData() {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        renderData(data.response.liveChannels[0]);
+      } catch (error) {
+        const content = document.getElementById('content');
+        content.innerHTML = `
         <div class="program-card error-box">
           <p style="color:red; font-weight:bold;">
             ⚠️ O navegador bloqueou o acesso à API do EPG (CORS).
@@ -516,88 +608,87 @@
           </p>
           <p><em>Erro técnico original: ${error.message}</em></p>
         </div>`;
+      }
     }
-  }
 
-  async function renderData(channel) {
-    const container = document.getElementById('content');
-    container.innerHTML = '';
+    async function renderData(channel) {
+      const container = document.getElementById('content');
+      container.innerHTML = '';
 
-    const episodeData = await fetch("https://wiki-ch.github.io/arquivos/msw_formatado.json")
-      .then(r => r.json())
-      .catch(_ => ({ lote_chaves: [], lote_chapolin: [] }));
+      const episodeData = await fetch("https://wiki-ch.github.io/arquivos/msw_formatado.json")
+        .then(r => r.json())
+        .catch(_ => ({ lote_chaves: [], lote_chapolin: [] }));
 
-    const getEpisodeTitle = (program, epNumber) => {
-      const list = program === "Chaves" ? episodeData.lote_chaves : episodeData.lote_chapolin;
-      const match = list.find(ep => ep.numero === String(epNumber).padStart(3, '0'));
-      return match ? match.titulo : '';
-    };
+      const getEpisodeTitle = (program, epNumber) => {
+        const list = program === "Chaves" ? episodeData.lote_chaves : episodeData.lote_chapolin;
+        const match = list.find(ep => ep.numero === String(epNumber).padStart(3, '0'));
+        return match ? match.titulo : '';
+      };
 
-    // ---- NOVA LÓGICA DE COR ----
-    channel.schedules.sort((a, b) => a.startTime - b.startTime);
-    const filteredSchedules = channel.schedules.filter(s => s.title === "Chaves" || s.title === "Chapolin");
+      channel.schedules.sort((a, b) => a.startTime - b.startTime);
+      const filteredSchedules = channel.schedules.filter(s => s.title === "Chaves" || s.title === "Chapolin");
 
-    // Criar lista de todos episódios para comparação
-    const todosEps = filteredSchedules.map(s => ({
-      title: s.title,
-      num: inferEpisodeNumber(s),
-      startTime: s.startTime
-    }));
+      const todosEps = filteredSchedules.map(s => ({
+        title: s.title,
+        num: inferEpisodeNumber(s),
+        startTime: s.startTime
+      }));
 
-    // Agrupa pelo dia escolhido
-    const groupedByDate = {};
-    filteredSchedules.forEach(schedule => {
-      const start = new Date(schedule.startTime * 1000);
-      if (start.toDateString() !== selectedDate.toDateString()) return;
-      const key = start.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'America/Sao_Paulo' });
-      if (!groupedByDate[key]) groupedByDate[key] = [];
-      groupedByDate[key].push(schedule);
-    });
+      const groupedByDate = {};
+      filteredSchedules.forEach(schedule => {
+        const start = new Date(schedule.startTime * 1000);
+        if (start.toDateString() !== selectedDate.toDateString()) return;
+        const key = start.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'America/Sao_Paulo' });
+        if (!groupedByDate[key]) groupedByDate[key] = [];
+        groupedByDate[key].push(schedule);
+      });
 
-    for (const [date, schedules] of Object.entries(groupedByDate)) {
-      const dateGroup = document.createElement('div');
-      dateGroup.className = 'date-group';
-      const title = document.createElement('div');
-      title.className = 'date-title';
-      title.innerText = date;
-      dateGroup.appendChild(title);
+      for (const [date, schedules] of Object.entries(groupedByDate)) {
+        const dateGroup = document.createElement('div');
+        dateGroup.className = 'date-group';
+        const title = document.createElement('div');
+        title.className = 'date-title';
+        title.innerText = date;
+        dateGroup.appendChild(title);
 
-      const channelBox = document.createElement('div');
-      channelBox.className = 'channel-group';
+        const channelBox = document.createElement('div');
+        channelBox.className = 'channel-group';
 
-      schedules.forEach(schedule => {
-        const sched = document.createElement('div');
-        sched.className = 'schedule';
+        schedules.forEach(schedule => {
+          const sched = document.createElement('div');
+          sched.className = 'schedule';
 
-        const inicio = new Date(schedule.startTime * 1000);
-        const fim = new Date(schedule.endTime * 1000);
-        const epNum = inferEpisodeNumber(schedule);
+          const inicio = new Date(schedule.startTime * 1000);
+          const fim = new Date(schedule.endTime * 1000);
+          const epNum = inferEpisodeNumber(schedule);
 
-        const episodeTitle = getEpisodeTitle(schedule.title, epNum) || '';
-        const fullTitle = `${schedule.title} - D${String(schedule.seasonNumber || '').padStart(2, '0')}:E${String(epNum || '').padStart(2, '0')} - ${episodeTitle}`;
+          const episodeTitle = getEpisodeTitle(schedule.title, epNum) || '';
+          const fullTitle = `${schedule.title} - D${String(schedule.seasonNumber || '').padStart(2, '0')}:E${String(epNum || '').padStart(2, '0')} - ${episodeTitle}`;
 
-        let color = "orange"; // padrão
-        if (Number.isFinite(epNum)) {
-          // Verifica se esse episódio já passou antes
-          const jaExibido = todosEps.some(e =>
-            e.title === schedule.title &&
-            e.num === epNum &&
-            e.startTime < schedule.startTime
-          );
+          let color = "orange"; // padrão
+          if (Number.isFinite(epNum)) {
+            const jaExibido = todosEps.some(e =>
+              e.title === schedule.title &&
+              e.num === epNum &&
+              e.startTime < schedule.startTime
+            );
 
-          if (jaExibido) {
-            color = "gold"; // reprise
-          } else {
-            color = schedule.title === "Chaves" ? "green" : "red"; // estreia
+            if (jaExibido) {
+              color = "gold"; // reprise
+            } else {
+              color = schedule.title === "Chaves" ? "green" : "red";
+            }
           }
-        }
 
-        sched.innerHTML = `
+          // <<< ADIÇÃO AQUI >>> marca reprises
+          if (color === "orange" || color === "gold") sched.classList.add("reprise");
+
+          sched.innerHTML = `
           <div class="schedule-grid">
             <div class="logo-box" style="border: 2px solid ${color};">
               <img src="${schedule.title === 'Chaves'
-                ? 'https://i.ibb.co/jvrnZDq2/logo-standard-poster-2x3-chaves.png'
-                : 'https://i.ibb.co/7tBN0Qjg/chapolin-logo-png-seeklogo-208768.png'}"
+              ? 'https://i.ibb.co/jvrnZDq2/logo-standard-poster-2x3-chaves.png'
+              : 'https://i.ibb.co/7tBN0Qjg/chapolin-logo-png-seeklogo-208768.png'}"
                 alt="${schedule.title}">
             </div>
             <div class="schedule-info">
@@ -617,96 +708,107 @@
           </div> 
         `;
 
-        sched.style.cursor = 'pointer';
-        sched.addEventListener('click', () => abrirModal(schedule));
-        sched.dataset.startTime = schedule.startTime;
-        sched.dataset.endTime = schedule.endTime;
-        channelBox.appendChild(sched);
-      });
+          sched.style.cursor = 'pointer';
+          sched.addEventListener('click', () => abrirModal(schedule));
+          sched.dataset.startTime = schedule.startTime;
+          sched.dataset.endTime = schedule.endTime;
+          channelBox.appendChild(sched);
+        });
 
-      dateGroup.appendChild(channelBox);
-      const aviso = document.createElement("div");
-      aviso.style.textAlign = "center";
-      aviso.style.color = "#007bff";
-      aviso.innerText = "* NOTA: O Canal costuma alterar o nome do episódio até a data de exibição.";
-      dateGroup.appendChild(aviso);
-      container.appendChild(dateGroup);
+        dateGroup.appendChild(channelBox);
+        const aviso = document.createElement("div");
+        aviso.style.textAlign = "center";
+        aviso.style.color = "#007bff";
+        aviso.innerText = "* NOTA: O Canal costuma alterar o nome do episódio até a data de exibição.";
+        dateGroup.appendChild(aviso);
+        container.appendChild(dateGroup);
+      }
+
+      atualizarBarrasProgresso();
     }
 
-    atualizarBarrasProgresso();
-  }
-
-  // ---------- Barra de progresso ----------
-  function atualizarBarrasProgresso() {
-    const nowTs = Math.floor(Date.now() / 1000);
-    const barras = document.querySelectorAll('.schedule');
-    barras.forEach(sched => {
-      const startTime = parseInt(sched.dataset.startTime, 10);
-      const endTime = parseInt(sched.dataset.endTime, 10);
-      const wrapper = sched.querySelector('.progress-wrapper');
-      if (nowTs >= startTime && nowTs <= endTime) {
-        const progress = ((nowTs - startTime) / (endTime - startTime)) * 100;
-        if (wrapper) {
-          wrapper.innerHTML = `
+    // ---------- Barra de progresso ----------
+    function atualizarBarrasProgresso() {
+      const nowTs = Math.floor(Date.now() / 1000);
+      const barras = document.querySelectorAll('.schedule');
+      barras.forEach(sched => {
+        const startTime = parseInt(sched.dataset.startTime, 10);
+        const endTime = parseInt(sched.dataset.endTime, 10);
+        const wrapper = sched.querySelector('.progress-wrapper');
+        if (nowTs >= startTime && nowTs <= endTime) {
+          const progress = ((nowTs - startTime) / (endTime - startTime)) * 100;
+          if (wrapper) {
+            wrapper.innerHTML = `
             <div class="progress-text">${Math.round(progress)}%</div>
             <div class="progress-bar-container">
               <div class="progress-bar" style="width:${Math.round(progress)}%"></div>
             </div>
           `;
+          }
+        } else {
+          if (wrapper) wrapper.innerHTML = '';
         }
-      } else {
-        if (wrapper) wrapper.innerHTML = '';
-      }
-    });
-  }
-  setInterval(atualizarBarrasProgresso, 10000);
+      });
+    }
+    setInterval(atualizarBarrasProgresso, 10000);
 
-  // ---------- Modal ----------
-  function abrirModal(schedule) {
-    try {
-      const inicio = new Date(schedule.startTime * 1000);
-      const fim = new Date(schedule.endTime * 1000);
-      const formatarHora = d => d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-      document.getElementById("modal-title").innerText = `${schedule.title} (T${schedule.seasonNumber || 1}:E${schedule.episodeNumber || 1})`;
-      document.getElementById("modal-meta").innerHTML = `
+    // ---------- Modal ----------
+    function abrirModal(schedule) {
+      try {
+        const inicio = new Date(schedule.startTime * 1000);
+        const fim = new Date(schedule.endTime * 1000);
+        const formatarHora = d => d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById("modal-title").innerText = `${schedule.title} (T${schedule.seasonNumber || 1}:E${schedule.episodeNumber || 1})`;
+        document.getElementById("modal-meta").innerHTML = `
         ${inicio.toLocaleDateString('pt-BR')} — ${formatarHora(inicio)} até ${formatarHora(fim)}<br>
         Duração: ${Math.round((schedule.endTime - schedule.startTime) / 60)} min<br>
         Classificação: ${schedule.rating?.code || 'N/A'} — ${schedule.rating?.descriptor?.join(',') || ''}
       `;
-      document.getElementById("modal-description").innerText = schedule.description || 'Sem descrição disponível.';
-      document.getElementById("modal-header").style.backgroundImage = `url('${(schedule.image || '').replace('{{image-size-placeholder}}', '640_360')}')`;
-      document.getElementById("modal").style.display = 'flex';
-    } catch (err) { console.error(err); alert('Erro ao abrir modal.'); }
-  }
-
-  // ---------- Inicializa ----------
-  renderDaySelector();
-  fetchData();
-
-  // ---------- Botão Voltar ao Topo ----------
-  const btnTopo = document.getElementById('btnTopo');
-  function checkShowBtn() {
-    try {
-      if (window.pageYOffset > 300) btnTopo.classList.add('visible');
-      else btnTopo.classList.remove('visible');
-    } catch (e) {}
-  }
-  window.addEventListener('scroll', checkShowBtn, { passive: true });
-  window.addEventListener('resize', checkShowBtn);
-  document.addEventListener('DOMContentLoaded', () => {
-    checkShowBtn();
-    updateBackToTopTheme?.();
-  });
-  btnTopo.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-  const observer = new MutationObserver(muts => {
-    for (const m of muts) {
-      if (m.attributeName === 'class') updateBackToTopTheme?.();
+        document.getElementById("modal-description").innerText = schedule.description || 'Sem descrição disponível.';
+        document.getElementById("modal-header").style.backgroundImage = `url('${(schedule.image || '').replace('{{image-size-placeholder}}', '640_360')}')`;
+        document.getElementById("modal").style.display = 'flex';
+      } catch (err) { console.error(err); alert('Erro ao abrir modal.'); }
     }
-  });
-  observer.observe(document.body, { attributes: true });
-</script>
+
+    // ---------- Inicializa ----------
+    renderDaySelector();
+    fetchData();
+
+    // ---------- Botão Voltar ao Topo ----------
+    const btnTopo = document.getElementById('btnTopo');
+    function checkShowBtn() {
+      try {
+        if (window.pageYOffset > 300) btnTopo.classList.add('visible');
+        else btnTopo.classList.remove('visible');
+      } catch (e) { }
+    }
+    window.addEventListener('scroll', checkShowBtn, { passive: true });
+    window.addEventListener('resize', checkShowBtn);
+    document.addEventListener('DOMContentLoaded', () => {
+      checkShowBtn();
+      updateBackToTopTheme?.();
+    });
+    btnTopo.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    const observer = new MutationObserver(muts => {
+      for (const m of muts) {
+        if (m.attributeName === 'class') updateBackToTopTheme?.();
+      }
+    });
+    observer.observe(document.body, { attributes: true });
+
+    // ---------- Interruptor de Reprises ----------
+    const toggleReprise = document.getElementById('toggleReprise');
+    toggleReprise.addEventListener('change', function () {
+      if (this.checked) {
+        document.body.classList.remove('hide-reprises');
+      } else {
+        document.body.classList.add('hide-reprises');
+      }
+    });
+  </script>
+
 
 
 
