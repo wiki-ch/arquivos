@@ -307,17 +307,18 @@
       ]
     },
     {
-      "name": "Jaiminho desafia Seu Barriga",
+      "name": "Jaiminho desafia sr. Barriga",
       "reference_id": "6363758492112_chaves_2025_021",
       "original_title": "",
       "episode_order_number": "0",
-      "id": "XXXXXXXXXXXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/HfqbzTZBATw/maxresdefault.jpg",
+      "id": "303759e1-c448-4165-a9cc-273a64248718",
+      "cover": "https://stream.maissbt.com/image/303759e1-c448-4165-a9cc-273a64248718/1280x720/10m13s/image.jpeg",
       "time": "12",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
-        "07/09/2025"
+        "07/09/2025",
+        "09/11/2025"
       ]
     },
     {
@@ -360,6 +361,34 @@
       "exibicao": "+SBT",
       "datas": [
         "26/09/2024"
+      ]
+    },
+    {
+      "name": "Temperos Indigestos",
+      "reference_id": "6363758492112_chaves_2025_025",
+      "original_title": "Temperos Indigestos",
+      "episode_order_number": "3",
+      "id": "155d768d-72df-4468-af04-5ed6aa28bc21",
+      "cover": "https://stream.maissbt.com/image/155d768d-72df-4468-af04-5ed6aa28bc21/1280x720/10m13s/image.jpeg",
+      "time": "10",
+      "enabled": true,
+      "exibicao": "SBT REDE | +SBT",
+      "datas": [
+        "09/11/2025"
+      ]
+    },
+    {
+      "name": "Chaves e o Chapolin",
+      "reference_id": "6363758492112_chaves_2025_026",
+      "original_title": "Chaves e o Chapolin",
+      "episode_order_number": "3",
+      "id": "82350301-2b1a-4665-bd3d-5212e5304801",
+      "cover": "https://stream.maissbt.com/image/82350301-2b1a-4665-bd3d-5212e5304801/1280x720/10m13s/image.jpeg",
+      "time": "10",
+      "enabled": true,
+      "exibicao": "SBT REDE | +SBT",
+      "datas": [
+        "09/11/2025"
       ]
     }
   ],
@@ -2545,7 +2574,8 @@
       "enabled": true,
       "exibicao": "SBT REDE",
       "datas": [
-        "12/10/2024"
+        "12/10/2024",
+        "02/11/2025"
       ]
     },
     {
@@ -2559,7 +2589,8 @@
       "enabled": true,
       "exibicao": "SBT REDE",
       "datas": [
-        "12/10/2024"
+        "12/10/2024",
+        "02/11/2025"
       ]
     },
     {
@@ -2573,7 +2604,8 @@
       "enabled": true,
       "exibicao": "SBT REDE",
       "datas": [
-        "12/10/2024"
+        "12/10/2024",
+        "02/11/2025"
       ]
     },
     {
@@ -4679,5 +4711,3 @@
     }
   ]
 }
-
-
