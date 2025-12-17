@@ -619,13 +619,13 @@
       "reference_id": "000000610_16001224_chaves_2024_002",
       "original_title": "",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
-      "time": "",
+      "id": "2b46803e-f008-466a-abd7-9ff610b6f215",
+      "cover": "https://stream.maissbt.com/image/2b46803e-f008-466a-abd7-9ff610b6f215/1280x720/10m13s/image.jpeg",
+      "time": "30",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
-        ""
+        "17/11/2025"
       ]
     },
     {
@@ -633,13 +633,13 @@
       "reference_id": "000000610_16001224_chaves_2024_003",
       "original_title": "",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
-      "time": "",
+      "id": "2142e115-61eb-499b-b076-f549d28e1dc2",
+      "cover": "https://stream.maissbt.com/image/2b46803e-f008-466a-abd7-9ff610b6f215/1280x720/10m13s/image.jpeg",
+      "time": "30",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
-        ""
+        "17/11/2025"
       ]
     },
     {
@@ -647,13 +647,13 @@
       "reference_id": "000000610_16001224_chaves_2024_004",
       "original_title": "",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
-      "time": "",
+      "id": "8ec3f600-080a-48ce-8496-71f071b7b01e",
+      "cover": "https://stream.maissbt.com/image/2b46803e-f008-466a-abd7-9ff610b6f215/1280x720/10m13s/image.jpeg",
+      "time": "30",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
-        ""
+        "17/11/2025"
       ]
     },
     {
@@ -3618,31 +3618,31 @@
       ]
     },
     {
-      "name": "Ramoncito (s / Dublar)",
+      "name": "Romancito - Parte 1",
       "reference_id": "000000610_16007200_chaves_2024_022",
-      "original_title": "",
+      "original_title": "Ramoncito",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
-      "time": "",
+      "id": "d85e166f-6481-4a2e-be54-465441d0cacb",
+      "cover": "https://stream.maissbt.com/image/d85e166f-6481-4a2e-be54-465441d0cacb/160x90/10m13s/image.jpeg",
+      "time": "21",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
-        ""
+        "07/12/2025"
       ]
     },
     {
-      "name": "Una broma blanca (s / Dublar)",
+      "name": "Uma piada branca - Parte 3",
       "reference_id": "000000610_16007200_chaves_2024_023",
-      "original_title": "",
+      "original_title": "Una broma blanca",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
-      "time": "",
+      "id": "66d21a25-d209-4b8f-84cf-32a680acc896",
+      "cover": "https://stream.maissbt.com/image/66d21a25-d209-4b8f-84cf-32a680acc896/160x90/10m13s/image.jpeg",
+      "time": "21",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
-        ""
+        "07/12/2025"
       ]
     },
     {
@@ -3864,13 +3864,13 @@
       "reference_id": "000000610_16007200_chaves_2024_039",
       "original_title": "",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
-      "time": "",
+      "id": "6373824594112",
+      "cover": "https://stream.maissbt.com/image/6373824594112/160x90/11m46s538ms/image.jpeg",
+      "time": "23",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
-        ""
+        "01/12/2025"
       ]
     },
     {
@@ -3879,12 +3879,12 @@
       "original_title": "",
       "episode_order_number": "",
       "id": "",
-      "cover": "",
-      "time": "",
+      "cover": "https://images.weserv.nl/?sat=0&url=https://stream.maissbt.com/image/6373824594112/160x90/11m46s538ms/image.jpeg",
+      "time": "20",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE",
       "datas": [
-        ""
+        "01/12/2025"
       ]
     },
     {
@@ -4751,17 +4751,18 @@
       ]
     },
     {
-      "name": "Quem não tem cão caça com rato",
+      "name": "Quem não tem cão caça com rato - Parte 2",
       "reference_id": "000000610_16007200_chaves_2024_102",
       "original_title": "Quem não tem cão caça com rato",
       "episode_order_number": "269",
-      "id": "6377186843112",
-      "cover": "https://mais.sbt.com.br/_next/image?url=https%3A%2F%2Fcontent.maissbt.com%2Fimage%2Fv1%2Fstatic%2F6415726697001%2Fce500417-71eb-48ef-9bcc-5111dba01ddc%2F3b3923ed-c32b-4bbc-a84d-a116f63145fc%2F1280x720%2Fmatch%2Fimage.jpg%3FKey-Pair-Id%3DAPKAINLZLPQXMZG2IC5A%26Policy%3DeyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jb250ZW50Lm1haXNzYnQuY29tL2ltYWdlL3YxL3N0YXRpYy82NDE1NzI2Njk3MDAxL2NlNTAwNDE3LTcxZWItNDhlZi05YmNjLTUxMTFkYmEwMWRkYy8zYjM5MjNlZC1jMzJiLTRiYmMtYTg0ZC1hMTE2ZjYzMTQ1ZmMvMTI4MHg3MjAvbWF0Y2gvaW1hZ2UuanBnKiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc1NjMyNDg2Mn19fV19%26Signature%3DHyJykxR7rMkQWGouopLUGqmxB4eZ0dSkhiGEy1bEayCukmwiSrOBgnT9Ha6jjNeZ5b7lY15kw89zIZ24YO~KIjz2h3GFEhBG~2w~UtZzzbwVqvoocD2nqjk7yMifEgMws5EYW6rUMc5zG7rKoa2S1DOmdalb8-o2bVc~lpU~VLb~wPDylZRf8JuXWpu0MT5ZqRnZsRHkxmtHcmroUxWZwuDWshbzQejxa1UvU~Wgrac-jsi8lqYdbkLOvOJMX2z1nSEVNxydkvcUYzJNaFRkKQDpG5oVGBhbfugGLarZIJL5gqV01rtcy8WD0lKdGW9BEVDsZG4W~aQg0jEfV77utg__&w=640&q=75",
+      "id": "3bec4204-e736-4216-bda5-c8b8925b5c1f",
+      "cover": "https://stream.maissbt.com/image/3bec4204-e736-4216-bda5-c8b8925b5c1f/160x90/10m13s/image.jpeg",
       "time": "21",
       "enabled": true,
       "exibicao": "SBT REDE | +SBT",
       "datas": [
-        "20/08/2025"
+        "20/08/2025",
+        "07/12/2025"
       ]
     },
     {
