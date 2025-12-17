@@ -390,6 +390,76 @@
       "datas": [
         "09/11/2025"
       ]
+    },
+    {
+      "name": "Os atropelados",
+      "reference_id": "6363758492112_chaves_2025_027",
+      "original_title": "",
+      "episode_order_number": "3",
+      "id": "7e2ff44b-87e8-4356-a48a-b20f63438e4a",
+      "cover": "https://stream.maissbt.com/image/7e2ff44b-87e8-4356-a48a-b20f63438e4a/1280x720/10m13s/image.jpeg",
+      "time": "10",
+      "enabled": true,
+      "exibicao": "SBT REDE | +SBT",
+      "datas": [
+        "23/11/2025"
+      ]
+    },
+    {
+      "name": "Me dê luz (o dia da criança)",
+      "reference_id": "6363758492112_chaves_2025_028",
+      "original_title": "",
+      "episode_order_number": "3",
+      "id": "22840465-ee7c-41b2-b7d6-b188b5c330af",
+      "cover": "https://stream.maissbt.com/image/22840465-ee7c-41b2-b7d6-b188b5c330af/1280x720/10m13s/image.jpeg",
+      "time": "10",
+      "enabled": true,
+      "exibicao": "SBT REDE | +SBT",
+      "datas": [
+        "23/11/2025"
+      ]
+    },
+    {
+      "name": "A tenda do Chaves",
+      "reference_id": "6363758492112_chaves_2025_029",
+      "original_title": "",
+      "episode_order_number": "3",
+      "id": "9dd70ddf-0bea-4b22-a660-41c4d2777b96",
+      "cover": "https://stream.maissbt.com/image/9dd70ddf-0bea-4b22-a660-41c4d2777b96/1280x720/10m13s/image.jpeg",
+      "time": "10",
+      "enabled": true,
+      "exibicao": "SBT REDE | +SBT",
+      "datas": [
+        "23/11/2025"
+      ]
+    },
+    {
+      "name": "O tiro saiu pela culatra",
+      "reference_id": "6363758492112_chaves_2025_030",
+      "original_title": "",
+      "episode_order_number": "3",
+      "id": "53a3d39b-af1f-4afd-bb4f-7bced1fa9ddc",
+      "cover": "https://stream.maissbt.com/image/53a3d39b-af1f-4afd-bb4f-7bced1fa9ddc/1280x720/10m13s/image.jpeg",
+      "time": "10",
+      "enabled": true,
+      "exibicao": "SBT REDE | +SBT",
+      "datas": [
+        "01/12/2025"
+      ]
+    },
+    {
+      "name": "Ratos",
+      "reference_id": "6363758492112_chaves_2025_031",
+      "original_title": "",
+      "episode_order_number": "3",
+      "id": "4c0453fa-cd30-48a8-8119-db2d286afbdb",
+      "cover": "https://stream.maissbt.com/image/4c0453fa-cd30-48a8-8119-db2d286afbdb/1280x720/10m13s/image.jpeg",
+      "time": "10",
+      "enabled": true,
+      "exibicao": "SBT REDE | +SBT",
+      "datas": [
+        "14/12/2025"
+      ]
     }
   ],
   "videos_fixos": [
