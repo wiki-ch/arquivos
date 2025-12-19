@@ -4043,17 +4043,17 @@
       ]
     },
     {
-      "name": "Fiesta navideña (s / Dublar)",
+      "name": "Festa de Natal",
       "reference_id": "000000610_16007200_chaves_2024_052",
-      "original_title": "",
+      "original_title": "FIESTA NAVIDEÑA",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
-      "time": "",
+      "id": "1316dddf-9ace-4fb4-935f-4180f117fdd1",
+      "cover": "https://stream.maissbt.com/image/1316dddf-9ace-4fb4-935f-4180f117fdd1/160x90/10m13s/image.jpeg",
+      "time": "22",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
-        ""
+        "17/12/2025"
       ]
     },
     {
@@ -4723,17 +4723,17 @@
       ]
     },
     {
-      "name": "El globero (s / Dublar)",
+      "name": "O Globo",
       "reference_id": "000000610_16007200_chaves_2024_100",
-      "original_title": "",
+      "original_title": "EL GLOBERO",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
-      "time": "",
+      "id": "79f4200d-1710-4870-901b-60e623ec2fd5",
+      "cover": "https://stream.maissbt.com/image/79f4200d-1710-4870-901b-60e623ec2fd5/160x90/10m13s/image.jpeg",
+      "time": "23",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
-        ""
+        "17/12/2025"
       ]
     },
     {
