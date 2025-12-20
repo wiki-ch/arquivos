@@ -347,11 +347,50 @@ function generateDateForEpisode(numeroEpisodio, serie) {
   //  numeroEpisodio--;
   //}
 
-  if (numeroEpisodio <= 99) {
+  if (serie === 'chaves' && numeroEpisodio <= 99) {
     // EP 001–099 → segunda a sexta
     const startDate = new Date(2025, 7, 3, 10, 0, 0);
     date = new Date(startDate);
     let addedEpisodes = 0;
+
+    while (addedEpisodes < numeroEpisodio) {
+      date.setDate(date.getDate() + 1);
+      const day = date.getDay();
+      if (day >= 1 && day <= 5) addedEpisodes++;
+    }
+    return date;
+
+  } else if (serie === 'chapolin' && numeroEpisodio <= 64) {
+    // EP 001–099 → segunda a sexta
+    const startDate = new Date(2025, 7, 3, 10, 0, 0);
+    date = new Date(startDate);
+    let addedEpisodes = 0;
+
+    while (addedEpisodes < numeroEpisodio) {
+      date.setDate(date.getDate() + 1);
+      const day = date.getDay();
+      if (day >= 1 && day <= 5) addedEpisodes++;
+    }
+    return date;
+
+  }else if (serie === 'chapolin' && numeroEpisodio <= 65) {
+    // EP 001–099 → segunda a sexta
+    const startDate = new Date(2069, 7, 3, 10, 0, 0);
+    date = new Date(startDate);
+    let addedEpisodes = 65;
+
+    while (addedEpisodes < numeroEpisodio) {
+      date.setDate(date.getDate() + 1);
+      const day = date.getDay();
+      if (day >= 1 && day <= 5) addedEpisodes++;
+    }
+    return date;
+
+  } else if (serie === 'chapolin' && numeroEpisodio <= 99) {
+    // EP 001–099 → segunda a sexta
+    const startDate = new Date(2025, 9, 31, 10, 0, 0);
+    date = new Date(startDate);
+    let addedEpisodes = 66;
 
     while (addedEpisodes < numeroEpisodio) {
       date.setDate(date.getDate() + 1);
@@ -420,7 +459,10 @@ function generateDateForEpisode(numeroEpisodio, serie) {
     data.forEach((item) => {
       const numeroFormatado = formatNumero(item.numero);
       const tituloFormatado = formatTitulo(item.titulo);
-      const date = generateDateForEpisode(item.numero);
+      const serie =
+      gridElement.id === 'grid-chapolin-i' ? 'chapolin' : 'chaves';
+
+      const date = generateDateForEpisode(item.numero, serie);
 
       let ref, tv, imgClass;
 
