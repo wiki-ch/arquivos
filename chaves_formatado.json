@@ -219,7 +219,7 @@
       "enabled": true,
       "exibicao": "+SBT",
       "datas": [
-        "15/08/2025"
+        ""
       ]
     },
     {
@@ -2177,10 +2177,10 @@
       "original_title": "",
       "episode_order_number": "228",
       "id": "20270713_XXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/ZBofJarxjKE/maxresdefault.jpg",
+      "cover": "https://img.youtube.com/vi/ZBofJarxjKE/maxresdefault.jpg",
       "time": "27",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "13/07/2025"
       ]
@@ -3091,10 +3091,10 @@
       "original_title": "",
       "episode_order_number": "125",
       "id": "20250529_280",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://i.ibb.co/bjGfmnTm/20250325-107.png",
+      "cover": "https://i.ibb.co/bjGfmnTm/20250325-107.png",
       "time": "22",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "25/03/2025",
         "29/05/2025"
@@ -3340,11 +3340,11 @@
       "reference_id": "000000610_16007200_chaves_2024_002",
       "original_title": "",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
+      "id": "2b46803e-f008-466a-abd7-9ff610b6f215",
+      "cover": "https://stream.maissbt.com/image/2b46803e-f008-466a-abd7-9ff610b6f215/1280x720/25m33s/image.jpeg",
       "time": "",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "+SBT",
       "datas": [
         ""
       ]
@@ -3524,10 +3524,10 @@
       "original_title": "",
       "episode_order_number": "200",
       "id": "20250701_XXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/bEbrrhAyzVc/maxresdefault.jpg",
+      "cover": "https://img.youtube.com/vi/bEbrrhAyzVc/maxresdefault.jpg",
       "time": "23",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "02/07/2025"
       ]
@@ -3609,10 +3609,10 @@
       "original_title": "",
       "episode_order_number": "195",
       "id": "20250630_XXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/RSL6lOGwApA/maxresdefault.jpg",
+      "cover": "https://img.youtube.com/vi/RSL6lOGwApA/maxresdefault.jpg",
       "time": "22",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "30/06/2025"
       ]
@@ -4164,7 +4164,7 @@
       "cover": "https://mais.sbt.com.br/_next/image?url=https%3A%2F%2Fcontent.maissbt.com%2Fimage%2Fv1%2Fjit%2F6415726697001%2F2a4e5b87-f444-4394-88bb-7365be552bf7%2Fmain%2F1280x720%2F10m28s330ms%2Fmatch%2Fimage.jpg%3FKey-Pair-Id%3DAPKAINLZLPQXMZG2IC5A%26Policy%3DeyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jb250ZW50Lm1haXNzYnQuY29tL2ltYWdlL3YxL2ppdC82NDE1NzI2Njk3MDAxLzJhNGU1Yjg3LWY0NDQtNDM5NC04OGJiLTczNjViZTU1MmJmNy9tYWluLzEyODB4NzIwLzEwbTI4czMzMG1zL21hdGNoL2ltYWdlLmpwZyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3NDk2MDI3ODJ9fX1dfQ__%26Signature%3DTIT7oH81e8r7dsjNB5kbn0ZhGAizsSaIMhKHIBf5M0Oenk6sP9DCMEY~huiX82sNg1ZOumkydFawTYRVWRC8nc32fiqa6LWcWkQwR05kCGojG5B6l4EFUuFXtkcj05kOWxbGDWtcP-~YdOf1pI78NV7pcZoQ2m1rvNUYCTn2UsKSbVmNdshjS7mY6pGVG9xRRjxsSu8HLsrM3aTE~ssR3RBH8ZhLFnijVxSFz-7vhxbzb07UajvYff1XnCbPvHY9XLzkhPx9~WgJI9~lCsPIWoqridM8sH7yAXnmBF3kLn~W4SUlLMvxXidjTe5kt2EQTAp6ToEXQW3iKAgwZSZDmA__&w=640&q=75",
       "time": "21",
       "enabled": true,
-      "exibicao": "SBT REDE | +SBTs",
+      "exibicao": "SBT REDE | +SBT",
       "datas": [
         "28/03/2025",
         "10/06/2025"
@@ -4290,10 +4290,10 @@
       "original_title": "",
       "episode_order_number": "0",
       "id": "20250626_XXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/mUhQC-ibrUo/maxresdefault.jpg",
+      "cover": "https://img.youtube.com/vi/mUhQC-ibrUo/maxresdefault.jpg",
       "time": "22",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "26/06/2025"
       ]
@@ -4304,10 +4304,10 @@
       "original_title": "",
       "episode_order_number": "188",
       "id": "20250626_XXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://i.ibb.co/kstTRFLd/20250410-149.jpg",
+      "cover": "https://i.ibb.co/kstTRFLd/20250410-149.jpg",
       "time": "21",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "10/04/2025",
         "26/06/2025"
@@ -4742,10 +4742,10 @@
       "original_title": "",
       "episode_order_number": "202",
       "id": "20250704_XXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/_1fjIncAm5g/mqdefault.jpg",
+      "cover": "https://img.youtube.com/vi/_1fjIncAm5g/mqdefault.jpg",
       "time": "20",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "03/07/2025"
       ]

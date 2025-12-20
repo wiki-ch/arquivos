@@ -447,10 +447,10 @@
       "original_title": "",
       "episode_order_number": "50",
       "id": "20250702_XXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/_nhS2iw7O7U/maxresdefault.jpg",
+      "cover": "https://img.youtube.com/vi/_nhS2iw7O7U/maxresdefault.jpg",
       "time": "XX",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "10/12/2024", "02/07/2025"
       ]
@@ -475,10 +475,10 @@
       "original_title": "",
       "episode_order_number": "40",
       "id": "07/04/2025",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/F901vN8OoP4/mqdefault.jpg",
+      "cover": "https://img.youtube.com/vi/F901vN8OoP4/mqdefault.jpg",
       "time": "XX",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "20/03/2025"
       ]
@@ -1063,10 +1063,10 @@
       "original_title": "",
       "episode_order_number": "51",
       "id": "20250703_XXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://i3.ytimg.com/vi/Dpi8suLu7qY/hqdefault.jpg",
+      "cover": "https://i3.ytimg.com/vi/Dpi8suLu7qY/hqdefault.jpg",
       "time": "XX",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "01/01/2025", "03/07/2025"
       ]
@@ -1203,10 +1203,10 @@
       "original_title": "",
       "episode_order_number": "53",
       "id": "20250718_XXX",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/_k8ms_Y6178/maxresdefault.jpg",
+      "cover": "https://img.youtube.com/vi/_k8ms_Y6178/maxresdefault.jpg",
       "time": "XX",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "11/12/2024", "17/07/2025"
       ]
@@ -1245,10 +1245,10 @@
       "original_title": "",
       "episode_order_number": "0",
       "id": "20241102_003",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/6KHMsmQZ71c/maxresdefault.jpg",
+      "cover": "https://img.youtube.com/vi/6KHMsmQZ71c/maxresdefault.jpg",
       "time": "XX",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
         "02/11/2024"
       ]
@@ -1259,10 +1259,10 @@
       "original_title": "",
       "episode_order_number": "",
       "id": "",
-      "cover": "",
+      "cover": "https://img.youtube.com/vi/6KHMsmQZ71c/maxresdefault.jpg",
       "time": "",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "<font color=\"red\">+SBT<font>",
       "datas": [
         ""
       ]
@@ -3140,9 +3140,9 @@
       "cover": "https://img.youtube.com/vi/UBBYK0A74nw/mqdefault.jpg",
       "time": "22",
       "enabled": true,
-      "exibicao": "",
+      "exibicao": "SBT FILIAL | <font color=\"red\">+SBT<font>",
       "datas": [
-        ""
+        "?"
       ]
     },
     {
