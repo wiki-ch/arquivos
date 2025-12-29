@@ -690,7 +690,8 @@
       "enabled": true,
       "exibicao": "SBT REDE",
       "datas": [
-        "03/02/2025"
+        "03/02/2025",
+        "21/12/2025"
       ]
     },
     {
@@ -704,7 +705,8 @@
       "enabled": true,
       "exibicao": "SBT REDE",
       "datas": [
-        "04/02/2025"
+        "04/02/2025",
+        "21/12/2025"
       ]
     },
     {
@@ -1842,31 +1844,33 @@
       ]
     },
     {
-      "name": "Julieo e Romieta - Parte 1",
+      "name": "Julieu e Romieta - Parte 1",
       "reference_id": "000000611_16001293_chapolincolorado_2024_122",
-      "original_title": "",
+      "original_title": "Julieu e Romieta",
       "episode_order_number": "0",
-      "id": "20250113_027",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/o4i2fidBMnI/maxresdefault.jpg",
-      "time": "XX",
+      "id": "758e0514-9965-450f-99e9-d5c26db54136",
+      "cover": "https://stream.maissbt.com/image/758e0514-9965-450f-99e9-d5c26db54136/160x90/8m38s/image.jpeg",
+      "time": "21",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
-        "13/01/2025"
+        "13/01/2025",
+        "28/12/2025"
       ]
     },
     {
-      "name": "Julieo e Romieta - Parte 2",
+      "name": "Julieu e Romieta - Parte 2",
       "reference_id": "000000611_16001293_chapolincolorado_2024_123",
-      "original_title": "",
+      "original_title": "Julieu e Romieta",
       "episode_order_number": "0",
-      "id": "20250114_028",
-      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/o4i2fidBMnI/maxresdefault.jpg",
-      "time": "XX",
+      "id": "e56aafee-ece9-4136-8c71-74cd0fa9a37a",
+      "cover": "https://stream.maissbt.com/image/e56aafee-ece9-4136-8c71-74cd0fa9a37a/160x90/11m45s/image.jpeg",
+      "time": "21",
       "enabled": true,
-      "exibicao": "SBT REDE",
+      "exibicao": "SBT REDE | <font color=\"red\">+SBT<font>",
       "datas": [
-        "14/01/2025"
+        "14/01/2025",
+        "28/12/2025"
       ]
     },
     {

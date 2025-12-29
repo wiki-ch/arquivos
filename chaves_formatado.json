@@ -460,6 +460,20 @@
       "datas": [
         "14/12/2025"
       ]
+    },
+    {
+      "name": "Objetos emprestados",
+      "reference_id": "6363758492112_chaves_2025_032",
+      "original_title": "",
+      "episode_order_number": "3",
+      "id": "90899c8e-5b9a-46e5-931c-93c923d64d6d",
+      "cover": "https://stream.maissbt.com/image/90899c8e-5b9a-46e5-931c-93c923d64d6d/1280x720/8m13s/image.jpeg",
+      "time": "10",
+      "enabled": true,
+      "exibicao": "+SBT",
+      "datas": [
+        ""
+      ]
     }
   ],
   "videos_fixos": [
@@ -3219,12 +3233,12 @@
       "original_title": "",
       "episode_order_number": "",
       "id": "",
-      "cover": "",
-      "time": "",
+      "cover": "https://images.weserv.nl/?sat=0&url=https://img.youtube.com/vi/cSa4m0S7QaU/mqdefault.jpg",
+      "time": "21",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "SBT REDE",
       "datas": [
-        ""
+        "28/12/2025"
       ]
     },
     {
@@ -4124,7 +4138,8 @@
       "enabled": true,
       "exibicao": "SBT REDE",
       "datas": [
-        "25/12/2024"
+        "25/12/2024",
+        "21/12/2025"
       ]
     },
     {
@@ -4653,15 +4668,15 @@
       ]
     },
     {
-      "name": "El saco del señor barriga (s / Dublar)",
+      "name": "O saco do sr. Barriga",
       "reference_id": "000000610_16007200_chaves_2024_095",
-      "original_title": "",
+      "original_title": "El saco del Señor Barriga",
       "episode_order_number": "",
-      "id": "",
-      "cover": "",
-      "time": "",
+      "id": "4e60f10d-8bb1-4c2b-8b5a-c47b2bc1b133",
+      "cover": "https://stream.maissbt.com/image/4e60f10d-8bb1-4c2b-8b5a-c47b2bc1b133/160x90/5m15s/image.jpeg",
+      "time": "20",
       "enabled": false,
-      "exibicao": "",
+      "exibicao": "+SBT",
       "datas": [
         ""
       ]
