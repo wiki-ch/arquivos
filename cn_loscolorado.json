@@ -1,43 +1,43 @@
 {
     "lote_chapolin": [
         {
-            "numero": "001",
+            "numero": "01",
+            "titulo": "Chapolin Colorado Tem Uma Família"
+        },
+        {
+            "numero": "02",
+            "titulo": "Piratas Não Jogam Futebol"
+        },
+        {
+            "numero": "03",
+            "titulo": "O Homem Das Cavernas Escondido No Armário!"
+        },
+        {
+            "numero": "04",
+            "titulo": "Tem uma Pinhata Viva!"
+        },
+        {
+            "numero": "05",
+            "titulo": "Lina Fica Grandona, Lina Fica Pequenininha"
+        },
+        {
+            "numero": "06",
             "titulo": "-"
         },
         {
-            "numero": "002",
+            "numero": "07",
             "titulo": "-"
         },
         {
-            "numero": "003",
+            "numero": "08",
             "titulo": "-"
         },
         {
-            "numero": "004",
+            "numero": "09",
             "titulo": "-"
         },
         {
-            "numero": "005",
-            "titulo": "-"
-        },
-        {
-            "numero": "006",
-            "titulo": "-"
-        },
-        {
-            "numero": "007",
-            "titulo": "-"
-        },
-        {
-            "numero": "008",
-            "titulo": "-"
-        },
-        {
-            "numero": "009",
-            "titulo": "-"
-        },
-        {
-            "numero": "010",
+            "numero": "10",
             "titulo": "-"
         }
     ]
