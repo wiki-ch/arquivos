@@ -508,7 +508,7 @@
       const agora = Math.floor(Date.now() / 1000);
       const startTime = 1754290800;
       const endTime = agora + (10 * 365 * 24 * 60 * 60);
-      return `https://www.clarotvmais.com.br/avsclient/1.2/epg/livechannels?types=&channelIds=98&startTime=${startTime}&endTime=${endTime}&onlyUserContent=&location=FLORIANOPOLIS,SANTA%20CATARINA&channel=PCTV`;
+      return `https://proxy-teste.sbtcdn.workers.dev/`;
     }	
 
     // ---------- Helpers ----------
@@ -587,45 +587,29 @@
 
     renderDaySelector();
 
-// ---------- Fetch e Render ----------
-async function fetchData() {
-  try {
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    renderData(data.response.liveChannels[0]);
-  } catch (error) {
-    const content = document.getElementById('content');
-    content.innerHTML = `
-      <div class="program-card error-box" style="font-size:1.2em; padding:20px; text-align:center;">
-        <p style="color:red; font-weight:bold; font-size:1.5em;">
-          ⚠️ O navegador bloqueou o acesso à API do EPG (CORS)
-        </p>
-        <p>
-          Ative a extensão 
-          <a href="https://chrome.google.com/webstore/detail/lhobafahddgcelffkeicbaginigeejlf" target="_blank">
-            Habilitar CORS
-          </a> no Chrome.
-        </p>
-        <p style="margin-top:15px; font-size:0.95em; color:gray;">
-          <em>Erro técnico original: ${error.message}</em>
-        </p>
-
-        <!-- NOVA MENSAGEM SOBRE A VERSÃO BETA -->
-        <div style="margin-top:20px; font-size:1.1em; background:#d4edda; border:2px solid #c3e6cb; padding:15px; border-radius:8px; color:#000;">
-          <strong>⚡ Não quer instalar nenhuma extensão?</strong><br>
-          Utilize a <strong>versão beta</strong>. Ela pode demorar um pouco mais ao clicar nos dias, mas funciona sem extensões.<br><br>
-          <a href="https://wiki-ch.github.io/arquivos/epg_multishow_beta.html" 
-             target="_blank" 
-             style="font-weight:bold; color:#856404; text-decoration:underline;">
-            ACESSAR VERSÃO BETA
-          </a>
-        </div>
-      </div>
-    `;
-  }
-}
-
-
+    // ---------- Fetch e Render ----------
+    async function fetchData() {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        renderData(data.response.liveChannels[0]);
+      } catch (error) {
+        const content = document.getElementById('content');
+        content.innerHTML = `
+        <div class="program-card error-box">
+          <p style="color:red; font-weight:bold;">
+            ⚠️ O navegador bloqueou o acesso à API do EPG (CORS).
+          </p>
+          <p>
+            Ative a extensão 
+            <a href="https://chrome.google.com/webstore/detail/lhobafahddgcelffkeicbaginigeejlf" target="_blank">
+              Habilitar CORS
+            </a> no Chrome.
+          </p>
+          <p><em>Erro técnico original: ${error.message}</em></p>
+        </div>`;
+      }
+    }
 
     async function renderData(channel) {
       const container = document.getElementById('content');
