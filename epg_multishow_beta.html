@@ -445,11 +445,10 @@
 
 <body>
   <!-- HEADER BONITO -->
-  <!-- HEADER BONITO -->
   <div class="main-header">
     <div class="header-top">
       <div class="title-legend">
-        <h1>PROGRAMAÇÃO CH NO MULTISHOW</h1>
+        <h1>PROGRAMAÇÃO CH NO MULTISHOW // <font color="red">BETA</font></h1>
         <div class="legend">
           <span style="color: green;">● Chaves (ao vivo)</span>
           <span style="color: red;">● Chapolin (ao vivo)</span>
@@ -719,7 +718,7 @@
         const aviso = document.createElement("div");
         aviso.style.textAlign = "center";
         aviso.style.color = "#007bff";
-        aviso.innerText = "* NOTA: O Canal costuma alterar o nome do episódio até a data de exibição.";
+        aviso.innerHTML = "* NOTA: O Canal costuma alterar o nome do episódio até a data de exibição.<br><br><font color='red'>Esta página é a versão BETA e possui lerdeza!</font><br><a href='https://wiki-ch.github.io/arquivos/epg_multishow.html' style='color:#007bff; font-weight:bold; text-decoration:underline;'>Voltar para a versão oficial</a>";
         dateGroup.appendChild(aviso);
         container.appendChild(dateGroup);
       }
