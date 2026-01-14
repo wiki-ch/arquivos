@@ -429,7 +429,7 @@ function renderTemporada(containerId, temporada) {
 
       const img = document.createElement('img');
       img.src = temporada.thumb || coverDefault;
-      img.alt = ep.titulo || 'Episódio';
+      img.alt = ep.titulo || 'Capítulo';
 
       const capGlobal = String(contadorCapituloGlobal).padStart(4, '0');
 
@@ -444,9 +444,9 @@ function renderTemporada(containerId, temporada) {
       const span = document.createElement('span');
       span.innerHTML = `
         <div class="fig-title">
-          T${temp}E${capGlobal} - ${ep.titulo}: Capítulo ${cap}
+          T${temp}E${capGlobal} - ${ep.titulo}: Episódio ${cap}
         </div>
-        <div class="fig-info">Episódio: ${ep.ep_s}</div>
+        <div class="fig-info">Capítulo: ${ep.ep_s}</div>
         <div class="fig-info">Exibição: ${exibicaoStr}</div>
         <div class="fig-date">Reprise: ${repriseStr}</div>
       `;
