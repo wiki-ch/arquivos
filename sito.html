@@ -47,19 +47,21 @@
     border: 2px dashed #ff6b6b;
   }
 
-  .menu {
-    display: flex;
-    justify-content: space-between;
-    border-radius: 10px;
-    margin: 20px auto;
-    max-width: 1400px;
-    overflow: hidden;
-    flex-wrap: wrap;
-  }
+.menu {
+  display: flex;
+  justify-content: flex-start; /* Vamos controlar o alinhamento dos itens */
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 1400px;
+  overflow: hidden;
+  flex-wrap: nowrap; /* Não quebrar em linhas */
+  position: relative; /* Para a toggle posicionar absoluto dentro da menu */
+}
 
   .menu-item {
     flex: 1;
     text-align: center;
+  position:relative;
     padding: 20px;
     font-weight: bold;
     font-size: 1.4rem;
@@ -77,6 +79,7 @@
     justify-content: center;
     border-top: 2px solid white;
     width: 100%;
+    white-space: nowrap;
   }
 
   .sub-menu div {
@@ -290,6 +293,72 @@
     filter: grayscale(100%) brightness(0.7);
     opacity: 0.8;
   }
+  
+.toggle{
+  position:absolute;
+  top:18px;
+  right:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+  color:#fff;
+}
+
+.switch{
+  position:relative;
+  width:46px;
+  height:24px;
+}
+
+.switch input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  background:#555;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.slider::before{
+  content:"";
+  position:absolute;
+  height:18px;
+  width:18px;
+  left:3px;
+  top:3px;
+  background:white;
+  border-radius:50%;
+  transition:.3s;
+}
+
+.switch input:checked + .slider{
+  background:#f1c40f;
+}
+
+.switch input:checked + .slider::before{
+  transform:translateX(22px);
+}
+
+.toggle-menu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #fff;
+  user-select: none;
+  cursor: pointer;
+  z-index: 10;
+}
 </style>
 
 
@@ -298,10 +367,12 @@
 
   <header>WIKI SITIO // GLOBO ON 2026 ~ </header>
 
-  <div class="menu">
-    <div class="menu-item active" data-main="chaves">SÍTIO DO PICAPAU AMARELO (2001)</div>
-
-    <div class="sub-menu">
+<div class="menu">
+  <div style="flex:1; display:flex; flex-direction: column;">
+    <div class="menu-item active" data-main="chaves">
+      SÍTIO DO PICAPAU AMARELO (2001)
+    </div>
+    <div class="sub-menu" style="margin-top:8px;">
       <div data-index="0" class="active">TEMPORADA 1</div>
       <div data-index="1">TEMPORADA 2</div>
       <div data-index="2">TEMPORADA 3</div>
@@ -312,6 +383,17 @@
       <div data-index="7">ESPECIAIS</div>
     </div>
   </div>
+
+  <!-- Toggle fica absoluto no canto direito -->
+  <div class="toggle toggle-menu">
+    <span>Episodificar</span>
+    <label class="switch">
+      <input type="checkbox" id="chkCap" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+</div>
+
 
 <main>
   <div class="search-bar active" id="searchBar">
@@ -356,17 +438,24 @@
 
 <script>
 /* =========================
-   SELETORES BÁSICOS
+   SELETORES
    ========================= */
 const subTabs = document.querySelectorAll('.sub-menu div');
 const sections = document.querySelectorAll('main section');
 const searchInput = document.getElementById('searchInput');
 const btnTopo = document.getElementById('btnTopo');
+const chkCap = document.getElementById('chkCap');
 
 const coverDefault = 'https://wiki-ch.github.io/arquivos/sitio_cover.jpg';
 
 /* =========================
-   CONTROLE DE TEMPORADAS
+   CONTROLE GLOBAL
+   ========================= */
+let capitularizarAtivo = true;
+let dataOriginal = null;
+
+/* =========================
+   CONTROLE DE ABAS
    ========================= */
 function mostrarTemporada(index) {
   sections.forEach(sec => sec.classList.remove('active'));
@@ -381,7 +470,7 @@ subTabs.forEach((tab, index) => {
 });
 
 /* =========================
-   FUNÇÕES DE DATA
+   DATAS
    ========================= */
 function avancarDiaUtil(data, diasPermitidos) {
   const nova = new Date(data);
@@ -399,68 +488,19 @@ function formatarData(data, hora) {
 }
 
 /* =========================
-   DATAS GLOBAIS (LINHA DO TEMPO ÚNICA)
+   LINHA DO TEMPO
    ========================= */
-let dataExibicaoGlobal = new Date('2026-01-12T08:10:00'); // segunda
-let dataRepriseGlobal  = new Date('2026-01-13T02:00:00'); // terça
+let dataExibicaoGlobal;
+let dataRepriseGlobal;
+let contadorCapituloGlobal;
 
-const diasExibicao = [1, 2, 3, 4, 5]; // seg a sex
-const diasReprise  = [2, 3, 4, 5, 6]; // ter a sáb
+const diasExibicao = [1,2,3,4,5];
+const diasReprise  = [2,3,4,5,6];
 
-let contadorCapituloGlobal = 1;
-
-/* =========================
-   RENDERIZAÇÃO
-   ========================= */
-function renderTemporada(containerId, temporada) {
-  const grid = document.getElementById(containerId);
-  if (!grid || !temporada || !temporada.episodios) return;
-
-  grid.innerHTML = '';
-  const agora = new Date();
-
-  temporada.episodios.forEach(ep => {
-    const temp = String(temporada.temporada).padStart(2, '0');
-    const totalCapitulos = Number(ep.capitulos) || 1;
-
-    for (let cap = 1; cap <= totalCapitulos; cap++) {
-      const fig = document.createElement('div');
-      fig.className = 'fig';
-
-      const img = document.createElement('img');
-      img.src = temporada.thumb || coverDefault;
-      img.alt = ep.titulo || 'Capítulo';
-
-      const capGlobal = String(contadorCapituloGlobal).padStart(4, '0');
-
-      const exibicaoStr = formatarData(dataExibicaoGlobal, '08:10');
-      const repriseStr  = formatarData(dataRepriseGlobal,  '02:00');
-
-      // PB se ainda não exibido
-      if (dataExibicaoGlobal > agora) {
-        fig.classList.add('nao-exibido');
-      }
-
-      const span = document.createElement('span');
-      span.innerHTML = `
-        <div class="fig-title">
-          T${temp}E${capGlobal} - ${ep.titulo}: Episódio ${cap}
-        </div>
-        <div class="fig-info">Capítulo: ${ep.ep_s}</div>
-        <div class="fig-info">Exibição: ${exibicaoStr}</div>
-        <div class="fig-date">Reprise: ${repriseStr}</div>
-      `;
-
-      fig.appendChild(img);
-      fig.appendChild(span);
-      grid.appendChild(fig);
-
-      // AVANÇA A LINHA DO TEMPO GLOBAL
-      dataExibicaoGlobal = avancarDiaUtil(dataExibicaoGlobal, diasExibicao);
-      dataRepriseGlobal  = avancarDiaUtil(dataRepriseGlobal, diasReprise);
-      contadorCapituloGlobal++;
-    }
-  });
+function resetTimeline() {
+  dataExibicaoGlobal = new Date('2026-01-12T08:10:00');
+  dataRepriseGlobal  = new Date('2026-01-13T02:00:00');
+  contadorCapituloGlobal = 1;
 }
 
 /* =========================
@@ -471,30 +511,122 @@ function atualizarAbas(data) {
     const temporada = data[idx];
     if (!temporada) return;
 
-    tab.innerText =
+    let total = 0;
+    temporada.episodios.forEach(ep => {
+      const caps = Number(ep.capitulos) || 1;
+      total += capitularizarAtivo ? caps : 1;
+    });
+
+    tab.textContent =
       idx === 7
-        ? `ESPECIAIS (${temporada.episodios.length})`
-        : `TEMPORADA ${temporada.temporada} (${temporada.episodios.length})`;
+        ? `ESPECIAIS (${total})`
+        : `TEMPORADA ${temporada.temporada} (${total})`;
   });
 }
 
 /* =========================
-   CARREGAMENTO DO JSON
+   RENDER GERAL
+   ========================= */
+function renderTudo(data) {
+  resetTimeline();
+
+  data.forEach((temporada, idx) => {
+    const gridId = idx === 7
+      ? 'grid-especiais'
+      : `grid-temporada-${idx + 1}`;
+    renderTemporada(gridId, temporada);
+  });
+
+  atualizarAbas(data);
+  mostrarTemporada(0);
+}
+
+// Objetos globais para armazenar datas de início de cada capítulo
+let dataExibicaoCapitulo = {};
+let dataRepriseCapitulo  = {};
+
+function renderTemporada(containerId, temporada) {
+  const grid = document.getElementById(containerId);
+  if (!grid) return;
+
+  grid.innerHTML = '';
+  const agora = new Date();
+
+  temporada.episodios.forEach(ep => {
+    const temp = String(temporada.temporada).padStart(2, '0');
+    const totalCaps = Number(ep.capitulos) || 1;
+    const limite = capitularizarAtivo ? totalCaps : 1;
+
+    for (let cap = 1; cap <= limite; cap++) {
+      const fig = document.createElement('div');
+      fig.className = 'fig';
+
+      const img = document.createElement('img');
+      img.src = temporada.thumb || coverDefault;
+
+      const capGlobal = String(contadorCapituloGlobal).padStart(4,'0');
+
+      // SE FOR CAPITULARIZADO, atualiza global
+      if (capitularizarAtivo) {
+        // Salva a data do primeiro episódio de cada capítulo
+        if (!dataExibicaoCapitulo[ep.ep_s]) dataExibicaoCapitulo[ep.ep_s] = new Date(dataExibicaoGlobal);
+        if (!dataRepriseCapitulo[ep.ep_s])  dataRepriseCapitulo[ep.ep_s]  = new Date(dataRepriseGlobal);
+      }
+
+      // Escolhe as datas corretas
+      const exib = capitularizarAtivo 
+        ? formatarData(dataExibicaoGlobal,'08:10') 
+        : formatarData(dataExibicaoCapitulo[ep.ep_s],'08:10');
+
+      const rep = capitularizarAtivo 
+        ? formatarData(dataRepriseGlobal,'02:00') 
+        : formatarData(dataRepriseCapitulo[ep.ep_s],'02:00');
+
+      if ((capitularizarAtivo ? dataExibicaoGlobal : dataExibicaoCapitulo[ep.ep_s]) > agora)
+        fig.classList.add('nao-exibido');
+
+      const span = document.createElement('span');
+      span.innerHTML = `
+        <div class="fig-title">
+          T${temp}E${capitularizarAtivo ? capGlobal : String(ep.ep_s).padStart(2, '0')} - ${ep.titulo}${capitularizarAtivo ? `: Episódio ${cap}` : ''}
+        </div>
+        <div class="fig-info">Capítulo: ${ep.ep_s}</div>
+        <div class="fig-info">Exibição: ${exib}</div>
+        <div class="fig-date">Reprise: ${rep}</div>
+      `;
+
+      fig.append(img, span);
+      grid.appendChild(fig);
+
+      // Avança datas apenas se capitularizado
+      if (capitularizarAtivo) {
+        dataExibicaoGlobal = avancarDiaUtil(dataExibicaoGlobal, diasExibicao);
+        dataRepriseGlobal  = avancarDiaUtil(dataRepriseGlobal, diasReprise);
+        contadorCapituloGlobal++;
+      }
+    }
+  });
+}
+
+
+/* =========================
+   CARREGAMENTO JSON
    ========================= */
 fetch('https://wiki-ch.github.io/arquivos/sitio_picapau_amarelo.json')
-  .then(res => res.json())
+  .then(r => r.json())
   .then(data => {
-    data.forEach((temporada, idx) => {
-      const gridId = idx === 7
-        ? 'grid-especiais'
-        : `grid-temporada-${idx + 1}`;
-      renderTemporada(gridId, temporada);
-    });
-
-    atualizarAbas(data);
-    mostrarTemporada(0);
+    dataOriginal = data;
+    renderTudo(dataOriginal);
   })
-  .catch(err => console.warn('Erro ao carregar JSON:', err));
+  .catch(err => console.warn('Erro JSON:', err));
+
+/* =========================
+   TOGGLE CAPITULARIZAR
+   ========================= */
+chkCap.addEventListener('change', () => {
+  capitularizarAtivo = chkCap.checked;
+  renderTudo(dataOriginal);
+});
 
 /* =========================
    BUSCA
@@ -512,20 +644,16 @@ searchInput.addEventListener('input', () => {
 });
 
 /* =========================
-   BOTÃO VOLTAR AO TOPO
+   BOTÃO TOPO
    ========================= */
 function checkShowBtn() {
-  if (window.pageYOffset > 300) btnTopo.classList.add('visible');
-  else btnTopo.classList.remove('visible');
+  btnTopo.classList.toggle('visible', window.pageYOffset > 300);
 }
 
-window.addEventListener('scroll', checkShowBtn, { passive: true });
-window.addEventListener('resize', checkShowBtn);
-
-btnTopo.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+window.addEventListener('scroll', checkShowBtn, { passive:true });
+btnTopo.onclick = () => window.scrollTo({ top:0, behavior:'smooth' });
 </script>
+
 
 
 
