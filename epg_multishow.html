@@ -636,9 +636,10 @@ async function fetchData() {
         .catch(_ => ({ lote_chaves: [], lote_chapolin: [] }));
 
       const getEpisodeTitle = (program, epNumber) => {
-        const list = program === "Chaves" ? episodeData.lote_chaves : episodeData.lote_chapolin;
-        const match = list.find(ep => ep.numero === String(epNumber).padStart(3, '0'));
-        return match ? match.titulo : '';
+          const list = program === "Chaves" ? episodeData.lote_chaves : episodeData.lote_chapolin;
+          const match = list.find(ep => ep.numero === String(epNumber).padStart(3, '0'));
+          if (!match) return '';
+          return match.titulo_exibicao || match.titulo || '';
       };
 
       channel.schedules.sort((a, b) => a.startTime - b.startTime);
