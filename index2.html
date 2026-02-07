@@ -458,7 +458,7 @@ function generateDateForEpisode(numeroEpisodio, serie) {
 
     data.forEach((item) => {
       const numeroFormatado = formatNumero(item.numero);
-      const tituloFormatado = formatTitulo(item.titulo);
+      const tituloFormatado = formatTitulo(item.titulo_exibicao || item.titulo);
       const serie =
       gridElement.id === 'grid-chapolin-i' ? 'chapolin' : 'chaves';
 
